@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block title %}<title>Nuevo Historial de trabajo</title>{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block panel %} 
+    <a data-toggle="modal" href="#modalFormCreate" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Crear Historial de trabajo</a><br><br>
+    <form action="/listJobHistorys" id="fList">
+        <a class="btn btn-primary" id="list"><i class="glyphicon glyphicon-list-alt"></i> Lista de Historiales de trabajo</a>
+    </form>
+{% endblock %}
+
+{% block contenido %}
+
+    <div class="container">
+        <form action="/getJobHistory" id="formularioVer">
+            <label>Ingrese el número del Historial de trabajo que desea ver:</label>
+            <input type="text" id="ndata" class="form-control"/><br>
+            <button type="button" class="btn btn-primary" id='ver' onclick="getData();"><i class="glyphicon glyphicon-search"></i> Ver Historial de trabajo</button>
+        </form>
+    </div><br>
+
+    <div id="detalles" class="well" style="display:none">
+        <form action="/deleteJobHistory" id="formularioEliminar">
+            <h4>Detalles</h4>
+            ID de Cuenta: <label id="id"></label><br>
+            Fecha inico: <label id="fecha_inicio"></label><br>
+            Fecha fin: <label id="fecha_fin"></label><br>
+            Empleado: <label id="empleado"></label><br>
+            Cargo: <label id="cargo"></label><br>
+            <a data-toggle="modal" href="#modalFormModify" id="modificar" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i> Modificar</a>
+            <a data-toggle="modal" href="#modalFormModify" id="eliminar" class="btn btn-primary"><i class="glyphicon glyphicon-trash"></i> Eliminar</a>
+            <a id="cerrar" class="btn btn-primary"><i class="glyphicon glyphicon-remove"></i> Cerrar</a>
+        </form>
+    </div>
+
+	<div class="modal fade" id="modalFormCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Crear Historial de Trabajo</h4>
+                </div>
+                <div class="modal-body">
+                <div class="container" id="form">
+                    <form action="/jobHistory" method="POST" class="form-signin" id="formularioCrear">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                    </form>
+                </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id='submit'>Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalFormModify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Modificar Historial de Trabajo</h4>
+                </div>
+                <div class="modal-body">
+                <div class="container" id="form">
+                    <form action="/modifyJobHistory" method="POST" class="form-signin" id="formularioModificar">
+                        {% csrf_token %}
+                        <input type="hidden" id="id_id_m" name="id">
+                    </form>
+                </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id='submitM'>Modificar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table id="tabla" class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Fecha inicio</th>
+            <th>Fecha fin</th>
+            <th>Empleado</th>
+            <th>Cargo</th>
+          </tr>
+        </thead>
+        <tbody id="tb">
+        </tbody>
+    </table>
+
+{% endblock %}

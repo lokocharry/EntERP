@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block title %}<title>Nueva Liquidación</title>{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    $(function() {
+        $("#id_fecha_liquidacion").datepicker({ dateFormat: 'yy-mm-dd'});
+    });
+</script>
+{% endblock %}
+
+{% block panel %} 
+    <a data-toggle="modal" href="#modalFormCreate" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Crear Liquidación</a><br><br>
+    <form action="/listLiquidations" id="fList">
+        <a class="btn btn-primary" id="list"><i class="glyphicon glyphicon-list-alt"></i> Lista de liquidaciones</a>
+    </form>
+{% endblock %}
+
+{% block contenido %}
+
+    <script type="text/javascript">
+		function set (argument) {
+			$("#id_factura").val($("#facturas").val());
+		}
+    </script>
+
+    <div class="container">
+        <form action="/getLiquidation" id="formularioVer">
+            <label>Ingrese el número del empleado que desea ver:</label>
+            <input type="text" id="ndata" class="form-control"/><br>
+            <button type="button" class="btn btn-primary" id='ver' onclick="getData();"><i class="glyphicon glyphicon-search"></i> Ver Liquidación</button>
+        </form>
+    </div><br>
+
+    <div id="detalles" class="well" style="display:none">
+        <h4>Detalles</h4>
+        Empleado: <label id="cantidad_venta"></label><br>
+        Fecha liquidación: <label id="factura"></label><br>
+        <a data-toggle="modal" href="#modalFormModify" id="modificar" class="btn btn-primary">Modificar</a>
+        <a id="cerrar" class="btn btn-primary">Cerrar</a>
+    </div>
+
+	<div class="modal fade" id="modalFormCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Crear Liquidación</h4>
+                </div>
+                <div class="modal-body">
+                <div class="container" id="form">
+                    <form action="/liquidations" method="POST" class="form-signin" id="formularioCrear">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                    </form>
+                </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id='submit'>Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalFormModify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Modificar Liquidación</h4>
+                </div>
+                <div class="modal-body">
+                <div class="container" id="form">
+                    <form action="/modifyLiquidation" method="POST" class="form-signin" id="formularioModificar">
+                        {% csrf_token %}
+                        <input type="hidden" id="id_id_m" name="id">
+                    </form>
+                </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id='submitM'>Modificar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

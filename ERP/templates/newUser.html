@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}<title>Nuevo Usuario</title>{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+        $(function() {
+            $("#id_fecha_ingreso").datepicker({ dateFormat: 'yy-mm-dd'});
+            $("#id_fecha_despido").datepicker({ dateFormat: 'yy-mm-dd'});
+        });
+    </script>
+{% endblock %}
+{% block contenido %}
+    <a data-toggle="modal" href="#modalFormCreate" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> Crear Usuario</a>
+
+    <div class="modal fade" id="modalFormCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Crear Usuario</h4>
+                </div>
+                <div class="modal-body">
+                <div class="container" id="form">
+                    <form method="POST" action="/newClient" class="form-signin" id="formularioCrear">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                    </form>
+                </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id='submit'>Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

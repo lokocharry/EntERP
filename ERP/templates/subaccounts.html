@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block title %}<title>Nuevo Subcuenta</title>{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block panel %} 
+    <a data-toggle="modal" href="#modalFormCreate" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Crear Sub-cuenta</a><br><br>
+    <form action="/listSubAccounts" id="fList">
+        <a class="btn btn-primary" id="list"><i class="glyphicon glyphicon-list-alt"></i> Lista de Sub-cuentas</a>
+    </form>
+{% endblock %}
+
+{% block contenido %}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#modificar").click(function() {
+                $("#id_numero_subcuenta_m").val($("#numero_subcuenta").text());
+                $("#id_descripcion_subcuenta_m").val($("#descripcion_subcuenta").text());
+            });
+        });
+    </script>
+
+    <div class="container">
+        <form action="/getSubAccount" id="formularioVer">
+            <label>Ingrese el número de la cuenta que desea ver:</label>
+            <input type="text" id="ndata" class="form-control"/><br>
+            <button type="button" class="btn btn-primary" id='ver' onclick="getData();"><i class="glyphicon glyphicon-search"></i> Ver Sub-Cuenta</button>
+        </form>
+    </div><br>
+
+    <div id="detalles" class="well" style="display:none">
+        <form action="/deleteProduct" id="formularioEliminar">
+            <h4>Detalles</h4>
+            ID de Sub-Cuenta: <label id="id"></label><br>
+            N° de Sub-Cuenta: <label id="numero_subcuenta"></label><br>
+            Descripcion de la cuenta: <label id="descripcion_subcuenta"></label><br>
+            <a data-toggle="modal" href="#modalFormModify" id="modificar" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i> Modificar</a>
+            <a data-toggle="modal" href="#modalFormModify" id="eliminar" class="btn btn-primary"><i class="glyphicon glyphicon-trash"></i> Eliminar</a>
+            <a id="cerrar" class="btn btn-primary"><i class="glyphicon glyphicon-remove"></i> Cerrar</a>
+        </form>
+    </div>
+
+	<div class="modal fade" id="modalFormCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Crear Cuenta</h4>
+                </div>
+                <div class="modal-body">
+                <div class="container" id="form">
+                    <form action="/subaccounts" method="POST" class="form-signin" id="formularioCrear">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                    </form>
+                </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id='submit'>Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalFormModify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Modificar Cuenta</h4>
+                </div>
+                <div class="modal-body">
+                <div class="container" id="form">
+                    <form action="/modifySubAccount" method="POST" class="form-signin" id="formularioModificar">
+                        {% csrf_token %}
+                        <input type="hidden" id="id_id_m" name="id">
+                    </form>
+                </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id='submitM'>Modificar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table id="tabla" class="table table-striped">
+        <thead>
+          <tr>
+            <th># Sub-Cuenta</th>
+            <th>ID Sub-Cuenta</th>
+            <th>Descripción Sub-Cuenta</th>
+          </tr>
+        </thead>
+        <tbody id="tb">
+        </tbody>
+    </table>
+
+{% endblock %}

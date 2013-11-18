@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}<title>Ingresar</title>{% endblock %}
+{% block contenido %}
+	<script type="text/javascript">
+        $(document).ready(function() {
+            $("#ingresar").click(function() {
+                    var frm = $('#formularioLogin');
+                    $.ajax({
+                        url : "/login", 
+                        type : "POST",
+                        dataType: "json",
+                        data : frm.serialize(),
+                        success : function(json) {
+                            $("#modalFormLogin").modal('hide');
+                            var $inputs = $('#formularioLogin :input');
+                            var values = {};
+                            $inputs.each(function() {
+                                values[this.name] = $(this).val('');
+                            });
+                            alert(json.mensage)
+                        },
+                        error : function(xhr,errmsg,err) {
+                            alert(xhr.status + ": " + xhr.responseText);
+                        }
+                    });
+                    return false;
+            });
+        });
+    </script>
+
+	 <a data-toggle="modal" href="#modalFormLogin" class="btn btn-primary btn-lg">Ingresar</a>
+
+    <div class="modal fade" id="modalFormLogin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Ingresar</h4>
+                </div>
+                <div class="modal-body">
+                <div class="container" id="form">
+                    <form method="POST" class="form-signin" id="formularioLogin">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                    </form>
+                </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="ingresar">Ingresar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

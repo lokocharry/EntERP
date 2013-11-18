@@ -1,0 +1,232 @@
+<html>
+
+<head>
+  {% block title %} {% endblock %}
+  <link href="{{STATIC_URL}}css/bootstrap.min.css" rel="stylesheet" media="screen">
+  <link href="{{STATIC_URL}}css/justified-nav.css" rel="stylesheet" media="screen">
+  <link rel="stylesheet" href="{{STATIC_URL}}css/jquery-ui.css"/>
+  <script type="text/javascript" src="{{STATIC_URL}}js/jquery-1.10.2.min.js"></script>
+  <script type="text/javascript" src="{{STATIC_URL}}js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="{{STATIC_URL}}js/jquery-ui.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      $("#formularioCrear").find('input[id], textarea[id], label[for], select[id]').each(function() {
+        if($(this).is('label')) {
+            $(this).clone().attr("for", $(this).attr("for")+"_m").appendTo("#formularioModificar");
+        } else {
+            $(this).clone().attr("id", $(this).attr("id")+"_m").appendTo("#formularioModificar");
+        }
+    });
+    });
+
+    function set_selected (text, field) {
+            var dd = document.getElementById(field);
+            for (var i = 0; i < dd.options.length; i++) {
+                if (dd.options[i].text === text) {
+                    dd.selectedIndex = i;
+                    break;
+                }
+            }   
+        }
+  </script>
+  <script type="text/javascript">
+        function showalert(message,alerttype) {
+            $('#alerta').append('<div id="alertdiv" class="alert ' +  alerttype + '"><a class="close" data-dismiss="alert">×</a><span>'+message+'</span></div>')
+            setTimeout(function() {
+        $("#alertdiv").remove();}, 3500);
+  }
+  </script>
+  {% block scripts %} {% endblock %}
+</head>
+
+<body>
+
+  <script type="text/javascript">
+        $(document).ready(function() {
+            $("#cerrar").click(function() {
+                $('#detalles').hide('drop', { to: { width: 200, height: 60 } }, 250 );
+            });
+        });
+  </script>
+
+  <script type="text/javascript">
+        $(document).ready(function() {
+            $("#submit").click(function() {
+                    var frm = $('#formularioCrear');
+                    $.ajax({
+                        url : frm.attr('action'), 
+                        type : "POST",
+                        dataType: "json",
+                        data : frm.serialize(),
+                        success : function(json) {
+                            $("#modalFormCreate").modal('hide');
+                            var $inputs = $('#formularioCrear :input');
+                            var values = {};
+                            $inputs.each(function() {
+                                values[this.name] = $(this).val('');
+                            });
+                            showalert(json.mensage,"alert alert-success");
+                        },
+                        error : function(xhr,errmsg,err) {
+                            //alert(xhr.status + ": " + xhr.responseText);
+                            showalert("Error inesperado en el servidor","alert alert-info");
+                        }
+                    });
+                    return false;
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#eliminar").click(function() {
+                    var frm = $('#formularioEliminar');
+                    $.ajax({
+                        url : frm.attr('action'), 
+                        type : "POST",
+                        dataType: "json",
+                        data : {
+                          id:$("#id").text()
+                        },
+                        success : function(json) {
+                            $("#modalFormCreate").modal('hide');
+                            var $inputs = $('#formularioCrear :input');
+                            var values = {};
+                            $inputs.each(function() {
+                                values[this.name] = $(this).val('');
+                            });
+                            showalert(json.mensage,"alert alert-success");
+                            $('#detalles').hide('drop', { to: { width: 200, height: 60 } }, 250 );
+                        },
+                        error : function(xhr,errmsg,err) {
+                            //alert(xhr.status + ": " + xhr.responseText);
+                            showalert("Error inesperado en el servidor","alert alert-info");
+                        }
+                    });
+                    return false;
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#list").click(function() {
+                    var frm = $('#fList');
+                    $.ajax({
+                        url : frm.attr('action'), 
+                        type : "POST",
+                        dataType: "json",
+                        data : frm.serialize(),
+                        success : function(json) {
+                          $("#tb").empty();
+                          for (var i = 0; i < json.length; i++) {
+                            tr="<tr>";
+                            for(name in json[0]){
+                              tr+="<td>"+json[i][name]+"</td>";
+                            }
+                            tr+="</tr>";
+                            $("#tb").append(tr);
+                          }
+                        },
+                        error : function(xhr,errmsg,err) {
+                            //alert(xhr.status + ": " + xhr.responseText);
+                            showalert("Error inesperado en el servidor","alert alert-info");
+                        }
+                    });
+                    return false;
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#submitM").click(function() {
+                    var frm = $('#formularioModificar');
+                    $.ajax({
+                        url : frm.attr('action'), 
+                        type : "POST",
+                        dataType: "json",
+                        data : frm.serialize(),
+                        success : function(json) {
+                            $("#modalFormModify").modal('hide');
+                            var $inputs = $('#formularioModificar :input');
+                            var values = {};
+                            $inputs.each(function() {
+                                values[this.name] = $(this).val('');
+                            });
+                            showalert(json.mensage,"alert alert-success");
+                            getData();
+                        },
+                        error : function(xhr,errmsg,err) {
+                            //alert(xhr.status + ": " + xhr.responseText);
+                            showalert("Error inesperado en el servidor","alert alert-info");
+                        }
+                    });
+                    return false;
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        function getData() {
+            $(document).ready(function() {
+                $('#detalles').hide('drop', { to: { width: 200, height: 60 } }, 250 );
+                var dataArray=[];
+                dataArray.push({name: "id", value: $('#ndata').val()});
+                if( $('#compra').length ){
+                  dataArray.push({name: "tipo", value: $('input:radio[name="group"]:checked').val()});
+                }
+                $.ajax({
+                    url : $("#formularioVer").attr('action'), 
+                    type : "POST",
+                    dataType: "json",
+                    data : dataArray,
+                    success : function(json) {
+                        var data=Object.keys(json);
+                        for (i in data) {
+                            llave=data[i];
+                            $("#"+llave).text(json[llave]);                        
+                        }
+                        $('#detalles').show('drop', { to: { width: 200, height: 60 } }, 250 );
+                    },
+                    error : function(xhr,errmsg,err) {
+                        //alert(xhr.status + ": " + xhr.responseText);
+                        //alert("Registro no encontrado");
+                        showalert("Registro no encontrado","alert alert-info");
+                    }
+                });
+                return false;
+            });   
+        }
+    </script>
+  <div class="container">
+    <div class="masthead">
+        <h3 class="text-muted">Ent<img src="{{STATIC_URL}}img/erp.jpg" width="80" height="80"></h3>
+        <ul class="nav nav-justified">
+          <li><a href="#">Home</a></li><!-- class="active"-->
+          <li><a href="#">Projects</a></li>
+          <li><a href="#">Services</a></li>
+          <li><a href="#">Downloads</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+  </div><br>
+
+  <div class="col-sm-3">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Acciones</h3>
+            </div>
+            <div class="panel-body" style="text-align: center;">
+              {% block panel %} {% endblock %}
+            </div>
+          </div>
+  </div>
+
+  <div class="col-sm-8">
+    <div id="alerta">
+    </div>
+    {% block contenido %} {% endblock %}
+  </div>
+      
+</body>
+
+</html>

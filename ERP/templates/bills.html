@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% block title %}<title>Nueva Factura</title>{% endblock %}
+{% block scripts %} 
+<script>
+    $(function() {
+        $("#id_fecha_factura").datepicker({ dateFormat: 'yy-mm-dd'});
+        $("#id_fecha_factura_m").datepicker({ dateFormat: 'yy-mm-dd'});
+    });
+
+    /**function getCurrentTime() {
+        var CurrentTime = "";
+        try {
+            var CurrentDate = new Date();
+            var CurrentHours = CurrentDate.getHours();
+            var CurrentMinutes = CurrentDate.getMinutes();
+            var CurrentSeconds = CurrentDate.getSeconds();
+            if (CurrentHours < 10) { CurrentHours = "0" + CurrentHours; }
+            if (CurrentMinutes < 10) { CurrentMinutes = "0" + CurrentMinutes; }
+            if (CurrentSeconds < 10) { CurrentSeconds = "0" + CurrentSeconds; }
+            CurrentTime = "" + CurrentHours + ":" + CurrentMinutes + ":" +CurrentSeconds + "";
+        }
+        catch (ex) {
+        }
+        return CurrentTime;
+    }
+    */
+</script>
+
+<script>
+    $(document).ready(function(){
+        $("#venta").click(function(){
+            $("#id_numero_factura").hide();
+            $('label[for="id_numero_factura"]').hide();
+            $("#id_tipo_factura").val("V");
+        });
+        $("#compra").click(function(){
+            $("#id_numero_factura").show();
+            $('label[for="id_numero_factura"]').show();
+            $("#id_tipo_factura").val("C");
+        });
+    });
+</script>
+{% endblock %}
+
+{% block panel %}    
+    <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle btn-primary" data-toggle="dropdown"><i class="glyphicon glyphicon-plus-sign"></i> Crear Factura<span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            <li><a data-toggle="modal" href="#modalFormCreate" class="btn btn-primary" id="venta"><i class="glyphicon glyphicon-circle-arrow-right"></i> Venta</a></li>
+            <li><a data-toggle="modal" href="#modalFormCreate" class="btn btn-primary" id="compra"><i class="glyphicon glyphicon-circle-arrow-left"></i> Compra</a></li>
+        </ul>
+    </div><br><br>
+
+    <form action="/listBills" id="fList">
+        <a class="btn btn-primary" id="list"><i class="glyphicon glyphicon-list-alt"></i> Lista de facturas</a>
+    </form>
+{% endblock %}
+
+{% block contenido %}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#modificar").click(function() {
+                $("#id_fecha_venta_m").val($("#fecha_venta").text());
+                $("#id_id_m").val($("#id").text());
+                set_selected($("#cliente").text() ,"id_cliente_m")
+                set_selected($("#tipo_pago_venta").text() ,"id_tipo_pago_venta_m")
+                set_selected($("#empleado").text() ,"id_empleado_m")
+            });
+        });
+    </script>
+
+    <div class="container">
+        <form action="/getBill" id="formularioVer">
+            <label>Ingrese el número de la factura que desea ver:</label>
+            <input type="text" id="ndata" class="form-control"/><br>
+            <input type="radio" id="compra" name="group" value="compra">Factura de compra</input>
+            <input type="radio" id="venta" name="group" value="venta">Factura de venta</input><br><br>
+            <button type="button" class="btn btn-primary" id='ver' onclick="getData();"><i class="glyphicon glyphicon-search"></i> Ver Factura</button>
+        </form>
+    </div><br>
+
+    <div id="detalles" class="well" style="display:none">
+        <h4>Detalles</h4>
+        ID de Factura: <label id="id"></label><br>
+        Valor: <label id="valor"></label><br>
+        Cliente: <label id="cliente"></label><br>
+        Fecha de venta: <label id="fecha_venta"></label><br>
+        Empleado: <label id="empleado"></label><br>
+        N° de Factura: <label id="numero_factura"></label><br>
+        <a data-toggle="modal" href="#modalFormModify" id="modificar" class="btn btn-primary">Modificar</a>
+        <a id="cerrar" class="btn btn-primary">Cerrar</a>
+    </div>
+
+    <div class="modal fade" id="modalFormCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Crear Factura</h4>
+                </div>
+                <div class="modal-body">
+                <div class="container" id="form">
+                    <form action="/bills" method="POST" class="form-signin" id="formularioCrear">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                    </form>
+                </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id='submit'>Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalFormModify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Modificar Factura</h4>
+                </div>
+                <div class="modal-body">
+                <div class="container" id="form">
+                    <form action="/modifyBill" method="POST" class="form-signin" id="formularioModificar">
+                        {% csrf_token %}
+                        <input type="hidden" id="id_id_m" name="id">
+                    </form>
+                </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id='submitM'>Modificar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table id="tabla" class="table table-striped">
+        <thead>
+          <tr>
+            <th>Tipo pago</th>
+            <th>Empleado</th>
+            <th>Cliente</th>
+            <th>Valor</th>
+            <th># Factura</th>
+            <th>Fecha venta</th>
+          </tr>
+        </thead>
+        <tbody id="tb">
+        </tbody>
+    </table>
+
+    </table>
+{% endblock %}
