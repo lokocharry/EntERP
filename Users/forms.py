@@ -27,7 +27,7 @@ class EmpleadoForm(UserCreationForm):
 			user=new_user
 			)
 		new_empleado.save()
-		return new_user
+		return new_empleado
 
 	class Meta:
 		model=Persona

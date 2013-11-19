@@ -78,6 +78,7 @@ class LiquidacionForm(forms.ModelForm):
 		for field in self.fields:
 			self.fields[field].widget.attrs['class'] = 'form-control'
 			self.fields[field].widget.attrs['placeholder'] = field
+		self.fields['empleado'].queryset = Persona.objects.exclude(tipo_cliente__isnull=False)
 
 	class Meta:
 		model=Liquidacion

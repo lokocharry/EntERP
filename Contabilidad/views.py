@@ -210,9 +210,10 @@ def create_liquidation(request):
         form=LiquidacionForm(request.POST)
         response_dict = {}
         if form.is_valid():
-            empleado=Persona.objects.get(id=request.POST['empleado'])
-            form.cleaned_data['valor']=empleado._get_pago()
             form.save()
+            liquidacion=Liquidacion.objects.filter(empleado=request.POST['empleado']).order_by('-id')[0]
+            liquidacion.valor=liquidacion._get_pago()
+            liquidacion.save()
             response_dict.update({'mensage': 'Creado exitoso'})
         return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
     else:

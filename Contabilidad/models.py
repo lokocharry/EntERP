@@ -1,6 +1,8 @@
 # -*- encoding: utf-8 -*-
+from __future__ import division
 from django.db import models
 from Users.models import *
+from Logistica.models import Pagos_O_Descuentos
 
 def to_json(obj):
 		response_dict={}
@@ -55,10 +57,10 @@ class Factura(models.Model):
 
 	def _get_valor(self):
 		pedidos=Pedido_Venta.objects.filter(factura=self.id)
-		sum=0
+		total=0
 		for i in pedidos:
-			sum=sum+(i.precio_unitario_venta*i.cantidad_venta)
-		return sum
+			total=total+(i.precio_unitario_venta*i.cantidad_venta)
+		return total
 
 	def __unicode__(self):
 		return unicode(self.id)
@@ -74,10 +76,17 @@ class Producto_Factura(models.Model):
 class Liquidacion(models.Model):
 	empleado=models.ForeignKey(Persona)
 	fecha_liquidacion=models.DateField()
-	valor=models.IntegerField()
+	valor=models.IntegerField(null=True, blank=True)
 
 	def _get_pago(self):
-		return empleado.cargo.salario_base*(empleado.cargo.desempenio/100)
+		pago=self.empleado.cargo.salario_base*(self.empleado.cargo.desempenio/100)
+		print pago
+		total=0
+		pagosdescuentos=Pagos_O_Descuentos.objects.filter(empleado=self.empleado)
+		for i in pagosdescuentos:
+			total=total+i.valor
+		print total
+		return pago+total
 	
 	def __unicode__(self):
-		return '%s %s' % (self.empleado.get_full_name(), self.fecha_liquidacion)
+		return '%s %s %s' % (self.empleado.nombre, self.empleado.apellido, self.fecha_liquidacion)

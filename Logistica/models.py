@@ -19,4 +19,4 @@ class Pagos_O_Descuentos(models.Model):
 	fecha=models.DateField()
 
 	def __unicode__(self):
-		return '%s %s %s' % (self.empleado.nombre, self.empleado.apellido_empleado, self.valor)
+		return '%s %s %s' % (self.empleado.nombre, self.empleado.apellido, self.valor)

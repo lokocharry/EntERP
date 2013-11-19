@@ -20,7 +20,7 @@
                 </div>
                 <div class="modal-body">
                 <div class="container" id="form">
-                    <form method="POST" action="/newClient" class="form-signin" id="formularioCrear">
+                    <form method="POST" action="/newUser" class="form-signin" id="formularioCrear">
                         {% csrf_token %}
                         {{form.as_p}}
                     </form>
