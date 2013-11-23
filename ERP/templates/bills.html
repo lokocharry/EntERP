@@ -61,11 +61,12 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $("#modificar").click(function() {
-                $("#id_fecha_venta_m").val($("#fecha_venta").text());
+                $("#id_fecha_factura_m").val($("#fecha_factura").text());
                 $("#id_id_m").val($("#id").text());
+                $("#id_numero_factura_m").val($("#numero_factura").text())
                 set_selected($("#cliente").text() ,"id_cliente_m")
-                set_selected($("#tipo_pago_venta").text() ,"id_tipo_pago_venta_m")
                 set_selected($("#empleado").text() ,"id_empleado_m")
+                set_selected($("#cuenta").text() ,"id_cuenta_m")
             });
         });
     </script>
@@ -85,9 +86,10 @@
         ID de Factura: <label id="id"></label><br>
         Valor: <label id="valor"></label><br>
         Cliente: <label id="cliente"></label><br>
-        Fecha de venta: <label id="fecha_venta"></label><br>
+        Fecha de venta: <label id="fecha_factura"></label><br>
         Empleado: <label id="empleado"></label><br>
         N° de Factura: <label id="numero_factura"></label><br>
+        Cuenta: <label id="cuenta"></label><br>
         <a data-toggle="modal" href="#modalFormModify" id="modificar" class="btn btn-primary">Modificar</a>
         <a id="cerrar" class="btn btn-primary">Cerrar</a>
     </div>

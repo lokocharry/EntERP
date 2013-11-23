@@ -3,6 +3,7 @@ from __future__ import division
 from django.db import models
 from Users.models import *
 from Logistica.models import Pagos_O_Descuentos
+from datetime import date
 
 def to_json(obj):
 		response_dict={}
@@ -38,7 +39,7 @@ class Cuenta(models.Model):
 	subcuenta=models.ForeignKey(SubCuenta)
 
 	def __unicode__(self):
-		return '%s%s' % (self.numero_cuenta, self.subcuenta)
+		return u'%s%s' % (self.numero_cuenta, self.subcuenta.numero_subcuenta)
 
 class Factura(models.Model):
 	TIPO_FACTURA=(
@@ -56,14 +57,17 @@ class Factura(models.Model):
 	numero_factura=models.IntegerField(null=True, blank=True)
 
 	def _get_valor(self):
-		pedidos=Pedido_Venta.objects.filter(factura=self.id)
+		pedidos=Producto_Factura.objects.filter(factura=self.id)
 		total=0
 		for i in pedidos:
 			total=total+(i.precio_unitario_venta*i.cantidad_venta)
 		return total
 
 	def __unicode__(self):
-		return unicode(self.id)
+		if self.numero_factura is not None:
+			return u'%s (%s)' % (self.numero_factura, self.cliente)
+		else:
+			return unicode(self.id)
 
 class Producto_Factura(models.Model):
 	cantidad_venta=models.IntegerField()
@@ -80,12 +84,10 @@ class Liquidacion(models.Model):
 
 	def _get_pago(self):
 		pago=self.empleado.cargo.salario_base*(self.empleado.cargo.desempenio/100)
-		print pago
 		total=0
-		pagosdescuentos=Pagos_O_Descuentos.objects.filter(empleado=self.empleado)
+		pagosdescuentos=Pagos_O_Descuentos.objects.filter(empleado=self.empleado, fecha__year=date.today().year, fecha__month=date.today().month)
 		for i in pagosdescuentos:
 			total=total+i.valor
-		print total
 		return pago+total
 	
 	def __unicode__(self):

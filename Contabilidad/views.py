@@ -234,8 +234,8 @@ def modify_liquidation(request):
 @csrf_exempt
 def get_liquidation(request):
     if request.method=='POST':
-        subcuenta = get_object_or_404(SubCuenta, numero_subcuenta=request.POST['id'])
-        return HttpResponse(simplejson.dumps(to_json(subcuenta)), mimetype='application/javascript')
+        liquidacion = get_object_or_404(Liquidacion, id=request.POST['id'])
+        return HttpResponse(simplejson.dumps(to_json(liquidacion)), mimetype='application/javascript')
 
 @csrf_exempt
 def get_all_liquidations(request):

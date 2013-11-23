@@ -34,8 +34,9 @@
 
     <div id="detalles" class="well" style="display:none">
         <h4>Detalles</h4>
-        Empleado: <label id="cantidad_venta"></label><br>
-        Fecha liquidación: <label id="factura"></label><br>
+        Empleado: <label id="empleado"></label><br>
+        Fecha liquidación: <label id="fecha_liquidacion"></label><br>
+        Valor: <label id="valor"></label><br>
         <a data-toggle="modal" href="#modalFormModify" id="modificar" class="btn btn-primary">Modificar</a>
         <a id="cerrar" class="btn btn-primary">Cerrar</a>
     </div>
@@ -85,5 +86,18 @@
             </div>
         </div>
     </div>
+
+    <table id="tabla" class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Empleado</th>
+            <th>Fecha</th>
+            <th>Valor</th>
+          </tr>
+        </thead>
+        <tbody id="tb">
+        </tbody>
+    </table>
 
 {% endblock %}

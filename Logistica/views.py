@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.template import RequestContext
 from django.utils import simplejson
 from django.views.decorators.csrf import csrf_exempt
+from Contabilidad.models import ValuesQuerySetToDict
 
 @csrf_exempt
 def create_job_history(request):
