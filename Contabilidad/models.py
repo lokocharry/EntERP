@@ -51,6 +51,7 @@ class Factura(models.Model):
 	fecha_factura=models.DateField()
 	tipo_factura=models.CharField(max_length=15, choices=TIPO_FACTURA)
 	empleado=models.ForeignKey(Persona, related_name='factura_empleados')
+	productos=models.ManyToManyField(Producto)
 	cuenta=models.ForeignKey(Cuenta)
 
 	#Factura de venta
@@ -68,14 +69,6 @@ class Factura(models.Model):
 			return u'%s (%s)' % (self.numero_factura, self.cliente)
 		else:
 			return unicode(self.id)
-
-class Producto_Factura(models.Model):
-	cantidad_venta=models.IntegerField()
-	producto=models.ForeignKey(Producto)
-	factura=models.ForeignKey(Factura)
-
-	def __unicode__(self):
-		return unicode(self.id)
 
 class Liquidacion(models.Model):
 	empleado=models.ForeignKey(Persona)

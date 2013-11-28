@@ -17,7 +17,7 @@ def create_bill(request):
 		return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
 	else:
 		form=FacturaForm()
-	return render_to_response('bills.html', {'form':form}, context_instance=RequestContext(request))
+	return render_to_response('facturas.html', {'form':form}, context_instance=RequestContext(request))
 
 @csrf_exempt
 def modify_bill(request):
@@ -28,6 +28,7 @@ def modify_bill(request):
         factura.fecha_factura= request.POST['fecha_factura']
         factura.tipo_factura= request.POST['tipo_factura']
         factura.empleado= request.POST['empleado']
+        factura.prodcstos=request.POST['productos']
         factura.cuenta= request.POST['cuenta']
         factura.save()
         response_dict.update({'mensage': 'Modificado exitoso'})
@@ -49,43 +50,6 @@ def get_all_bills(request):
         return HttpResponse(simplejson.dumps(ValuesQuerySetToDict(facturas)), mimetype='application/javascript')
 
 @csrf_exempt
-def create_sale_order(request):
-    if request.method=='POST':
-        form=ProductoFacturaForm(request.POST)
-        response_dict = {}
-        if form.is_valid():
-            form.save()
-            response_dict.update({'mensage': 'Creado exitoso'})
-        return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
-    else:
-        form=ProductoFacturaForm()
-        facturas=Factura.objects.filter(tipo_factura='V').values('id')
-    return render_to_response('orders.html', {'form':form, 'facturas':facturas}, context_instance=RequestContext(request))
-
-def modify_sale_order(request):
-    if request.method == "POST":
-        pedido=get_object_or_404(Producto_Factura, id=request.POST['id'])
-        response_dict = {}
-        pedido.cantidad= request.POST['cantidad']
-        pedido.producto= Producto.objects.get(id=request.POST['producto'])
-        pedido.factura= Factura.objects.get(id=request.POST['factura'])
-        pedido.save()
-        response_dict.update({'mensage': 'Modificado exitoso'})
-        return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
-
-@csrf_exempt
-def get_sale_order(request):
-    if request.method=='POST':
-        pedido = get_object_or_404(Producto_Factura, id=request.POST['id'])
-        return HttpResponse(simplejson.dumps(to_json(pedido)), mimetype='application/javascript')
-
-@csrf_exempt
-def get_all_orders(request):
-    if request.method=='POST':
-        ordenes=Producto_Factura.objects.all()
-        return HttpResponse(simplejson.dumps(ValuesQuerySetToDict(ordenes)), mimetype='application/javascript')
-
-@csrf_exempt
 def create_product(request):
     if request.method=='POST':
         form=ProductoForm(request.POST)
@@ -96,7 +60,7 @@ def create_product(request):
         return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
     else:
         form=ProductoForm()
-    return render_to_response('products.html', {'form':form}, context_instance=RequestContext(request))
+    return render_to_response('productos.html', {'form':form}, context_instance=RequestContext(request))
 
 @csrf_exempt
 def modify_product(request):
@@ -143,7 +107,7 @@ def create_account(request):
         return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
     else:
         form=CuentaForm()
-    return render_to_response('accounts.html', {'form':form}, context_instance=RequestContext(request))
+    return render_to_response('cuentas.html', {'form':form}, context_instance=RequestContext(request))
 
 @csrf_exempt
 def modify_account(request):
@@ -179,7 +143,7 @@ def create_subaccount(request):
         return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
     else:
         form=SubCuentaForm()
-    return render_to_response('subaccounts.html', {'form':form}, context_instance=RequestContext(request))
+    return render_to_response('subCuentas.html', {'form':form}, context_instance=RequestContext(request))
 
 @csrf_exempt
 def modify_subaccount(request):
@@ -218,7 +182,7 @@ def create_liquidation(request):
         return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
     else:
         form=LiquidacionForm()
-    return render_to_response('liquidation.html', {'form':form}, context_instance=RequestContext(request))
+    return render_to_response('liquidacion.html', {'form':form}, context_instance=RequestContext(request))
 
 @csrf_exempt
 def modify_liquidation(request):

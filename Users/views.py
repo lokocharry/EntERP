@@ -10,6 +10,9 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.decorators.csrf import csrf_exempt
 
+def index(request):
+	return render_to_response('index.html', context_instance=RequestContext(request))
+
 @csrf_exempt
 def create_user(request):
 	if request.method=='POST':
@@ -25,7 +28,7 @@ def create_user(request):
 		return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
 	else:
 		form=EmpleadoForm()
-	return render_to_response('newUser.html',{'form':form}, context_instance=RequestContext(request))
+	return render_to_response('nuevoUsuario.html',{'form':form}, context_instance=RequestContext(request))
 
 @csrf_exempt
 def create_client(request):
@@ -42,7 +45,7 @@ def create_client(request):
 		return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
 	else:
 		form=ClienteForm()
-	return render_to_response('newClient.html',{'form':form}, context_instance=RequestContext(request))
+	return render_to_response('nuevoCliente.html',{'form':form}, context_instance=RequestContext(request))
 
 @csrf_exempt
 def log_in(request):

@@ -1,58 +1,55 @@
 {% extends 'base.html' %}
-{% block title %}<title>Nuevo Pedido</title>{% endblock %}
+{% block title %}<title>Nuevo Departamento</title>{% endblock %}
 
 {% block scripts %}
 {% endblock %}
 
 {% block panel %} 
-    <a data-toggle="modal" href="#modalFormCreate" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Crear Orden</a><br><br>
-    <a class="btn btn-primary"><i class="glyphicon glyphicon-list-alt"></i> Lista de ordenes</a>
+    <a data-toggle="modal" href="#modalFormCreate" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Crear departamento</a><br><br>
+    <form action="/listDepartments" id="fList">
+        <a class="btn btn-primary" id="list"><i class="glyphicon glyphicon-list-alt"></i> Lista de departamentos</a>
+    </form>
 {% endblock %}
 
 {% block contenido %}
 
     <script type="text/javascript">
-		function set (argument) {
-			$("#id_factura").val($("#facturas").val());
-		}
+        $(document).ready(function() {
+            $("#modificar").click(function() {
+                $("#id_numero_cuenta_m").val($("#numero_cuenta").text());
+            });
+        });
     </script>
 
     <div class="container">
-        <form action="/getOrder" id="formularioVer">
-            <label>Ingrese el número de la orden que desea ver:</label>
+        <form action="/getDepartment" id="formularioVer">
+            <label>Ingrese el número del departamento que desea ver:</label>
             <input type="text" id="ndata" class="form-control"/><br>
-            <button type="button" class="btn btn-primary" id='ver' onclick="getData();"><i class="glyphicon glyphicon-search"></i> Ver Orden</button>
+            <button type="button" class="btn btn-primary" id='ver' onclick="getData();"><i class="glyphicon glyphicon-search"></i> Ver Departamento</button>
         </form>
     </div><br>
 
     <div id="detalles" class="well" style="display:none">
-        <h4>Detalles</h4>
-        N° de Pedido: <label id="id"></label><br>
-        Producto: <label id="valor"></label><br>
-        Cantidad Venta: <label id="cantidad_venta"></label><br>
-        Factura: <label id="factura"></label><br>
-        <a data-toggle="modal" href="#modalFormModify" id="modificar" class="btn btn-primary">Modificar</a>
-        <a id="cerrar" class="btn btn-primary">Cerrar</a>
+        <form action="/deleteDepartment" id="formularioEliminar">
+            <h4>Detalles</h4>
+            ID de Departamento: <label id="id"></label><br>
+            Nombre del Departamento: <label id="nombre_departamento"></label><br>
+            <a data-toggle="modal" href="#modalFormModify" id="modificar" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i> Modificar</a>
+            <a data-toggle="modal" href="#modalFormModify" id="eliminar" class="btn btn-primary"><i class="glyphicon glyphicon-trash"></i> Eliminar</a>
+            <a id="cerrar" class="btn btn-primary"><i class="glyphicon glyphicon-remove"></i> Cerrar</a>
+        </form>
     </div>
-	
-	<label>Seleccione la factura:</label>
-	<select class="form-control" id="facturas" placeholder="cliente" onchange="set();">
-		<option value="" selected="selected">---------</option>
-		{% for f in facturas %}
-			<option value="{{f.id}}">{{f.id}}</option>
-		{% endfor %}
-	</select>
 
 	<div class="modal fade" id="modalFormCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Crear Orden</h4>
+                    <h4 class="modal-title">Crear Departamento</h4>
                 </div>
                 <div class="modal-body">
                 <div class="container" id="form">
-                    <form action="/orders" method="POST" class="form-signin" id="formularioCrear">
+                    <form action="/departments" method="POST" class="form-signin" id="formularioCrear">
                         {% csrf_token %}
                         {{form.as_p}}
                     </form>
@@ -71,11 +68,11 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Modificar Factura</h4>
+                    <h4 class="modal-title">Modificar Departamento</h4>
                 </div>
                 <div class="modal-body">
                 <div class="container" id="form">
-                    <form action="/modifyBill" method="POST" class="form-signin" id="formularioModificar">
+                    <form action="/modifyDepartment" method="POST" class="form-signin" id="formularioModificar">
                         {% csrf_token %}
                         <input type="hidden" id="id_id_m" name="id">
                     </form>
@@ -92,10 +89,10 @@
     <table id="tabla" class="table table-striped">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Producto</th>
-            <th>Cantidad</th>
-            <th>Factura</th>
+            <th>Descripcion</th>
+            <th>ID Cuenta</th>
+            <th># Cuenta</th>
+            <th>Sub-cuenta</th>
           </tr>
         </thead>
         <tbody id="tb">

@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.template import RequestContext
 from django.utils import simplejson
 from django.views.decorators.csrf import csrf_exempt
+from Contabilidad.models import to_json
 from Contabilidad.models import ValuesQuerySetToDict
 
 @csrf_exempt
@@ -18,7 +19,7 @@ def create_job_history(request):
 		return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
 	else:
 		form=HistorialTrabajoForm()
-	return render_to_response('jobhistory.html', {'form':form}, context_instance=RequestContext(request))
+	return render_to_response('historialTrabajo.html', {'form':form}, context_instance=RequestContext(request))
 
 @csrf_exempt
 def modify_job_history(request):
@@ -56,7 +57,7 @@ def create_pay_discount(request):
 		return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
 	else:
 		form=PagosODescuentosForm()
-	return render_to_response('paydiscount.html', {'form':form}, context_instance=RequestContext(request))
+	return render_to_response('pagoDescuento.html', {'form':form}, context_instance=RequestContext(request))
 
 @csrf_exempt
 def modify_pay_discount(request):
