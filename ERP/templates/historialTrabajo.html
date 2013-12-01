@@ -2,6 +2,14 @@
 {% block title %}<title>Nuevo Historial de trabajo</title>{% endblock %}
 
 {% block scripts %}
+    <script>
+        $(function() {
+            $("#id_fecha_inicio").datepicker({ dateFormat: 'yy-mm-dd'});
+            $("#id_fecha_inicio_m").datepicker({ dateFormat: 'yy-mm-dd'});
+            $("#id_fecha_fin").datepicker({ dateFormat: 'yy-mm-dd'});
+            $("#id_fecha_fin_m").datepicker({ dateFormat: 'yy-mm-dd'});
+        });
+    </script>
 {% endblock %}
 
 {% block panel %} 
@@ -12,6 +20,18 @@
 {% endblock %}
 
 {% block contenido %}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#modificar").click(function() {
+                $("#id_id_m").val($("#id").text());
+                $("#id_fecha_inicio_m").val($("#fecha_inicio").text());
+                $("#id_fecha_fin_m").val($("#fecha_fin").text())
+                set_selected($("#cargo").text() ,"id_cargo_m")
+                set_selected($("#empleado").text() ,"id_empleado_m")
+            });
+        });
+    </script>
 
     <div class="container">
         <form action="/getJobHistory" id="formularioVer">

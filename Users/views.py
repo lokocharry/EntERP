@@ -17,6 +17,15 @@ def index(request):
 def reports(request):
 	return render_to_response('informes.html', context_instance=RequestContext(request))
 
+def accounting(request):
+	return render_to_response('contabilidad.html', context_instance=RequestContext(request))
+
+def logistics(request):
+	return render_to_response('logistica.html', context_instance=RequestContext(request))
+
+def human_resources(request):
+	return render_to_response('recursosHumanos.html', context_instance=RequestContext(request))
+
 @csrf_exempt
 def create_user(request):
 	if request.method=='POST':
@@ -53,10 +62,10 @@ def create_client(request):
 
 @csrf_exempt
 def log_in(request):
+	response_dict = {}
 	if request.method=='POST':
 		form=AuthenticationForm(request.POST)
 		if form.is_valid:
-			response_dict = {}
 			user=request.POST['username']
 			passw=request.POST['password']
 			acces=authenticate(username=user, password=passw)
@@ -71,3 +80,8 @@ def log_in(request):
 			else:
 				response_dict.update({'mensage': 'El usuario/contrasenia no existe'})
 				return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
+
+@login_required(login_url='/login')
+def log_out(request):
+	logout(request)
+	return HttpResponseRedirect('/')

@@ -16,7 +16,9 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $("#modificar").click(function() {
+                $("#id_id_m").val($("#id").text());
                 $("#id_numero_cuenta_m").val($("#numero_cuenta").text());
+                $("#id_descricion_cuenta_m").val($("#descripcion_cuenta").text());
             });
         });
     </script>
@@ -30,7 +32,7 @@
     </div><br>
 
     <div id="detalles" class="well" style="display:none">
-        <form action="/deleteProduct" id="formularioEliminar">
+        <form action="/deleteAccount" id="formularioEliminar">
             <h4>Detalles</h4>
             ID de Cuenta: <label id="id"></label><br>
             N° de Cuenta: <label id="numero_cuenta"></label><br>
@@ -93,7 +95,6 @@
             <th>Descripcion</th>
             <th>ID Cuenta</th>
             <th># Cuenta</th>
-            <th>Sub-cuenta</th>
           </tr>
         </thead>
         <tbody id="tb">

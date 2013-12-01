@@ -9,7 +9,7 @@ class Departamento(models.Model):
 
 class Cargo(models.Model):
 	nombre_cargo=models.CharField(max_length=20)
-	desceripcion_cargo=models.TextField()
+	descripcion_cargo=models.TextField()
 	salario_base=models.IntegerField()
 	departamento=models.ForeignKey(Departamento)
 	desempenio=models.IntegerField(null=True, blank=True)

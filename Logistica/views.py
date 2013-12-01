@@ -57,7 +57,7 @@ def create_pay_discount(request):
 		return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
 	else:
 		form=PagosODescuentosForm()
-	return render_to_response('pagoDescuento.html', {'form':form}, context_instance=RequestContext(request))
+	return render_to_response('pagosDescuentos.html', {'form':form}, context_instance=RequestContext(request))
 
 @csrf_exempt
 def modify_pay_discount(request):

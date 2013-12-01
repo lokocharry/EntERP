@@ -5,6 +5,7 @@
 <script type="text/javascript">
     $(function() {
         $("#id_fecha").datepicker({ dateFormat: 'yy-mm-dd'});
+        $("#id_fecha_m").datepicker({ dateFormat: 'yy-mm-dd'});
     });
 </script>
 {% endblock %}
@@ -17,6 +18,18 @@
 {% endblock %}
 
 {% block contenido %}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#modificar").click(function() {
+                $("#id_id_m").val($("#id").text());
+                set_selected($("#empleado").text() ,"id_empleado_m")
+                $("#id_descripcion_m").val($("#descripcion").text());
+                $("#id_fecha_m").val($("#fecha").text())
+                $("#id_valor_m").val($("#valor").text())
+            });
+        });
+    </script>
 
     <div class="container">
         <form action="/getPayDiscount" id="formularioVer">

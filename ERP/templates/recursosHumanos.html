@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>Recursos Humanos</title>
+    <link href="{{STATIC_URL}}css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="{{STATIC_URL}}css/justified-nav.css" rel="stylesheet" media="screen">
+    <script type="text/javascript" src="{{STATIC_URL}}js/bootstrap.min.js"></script>
+	</head>
+
+	<body>
+		<div class="container">
+    		<div class="masthead">
+        		<h3 class="text-muted">Ent<img src="{{STATIC_URL}}img/erp.jpg" width="80" height="80"></h3>
+        		<ul class="nav nav-justified">
+                <li><a href="/"><i class="glyphicon glyphicon-home"></i> Home</a></li><!-- class="active"-->
+                <li><a href="/accounting"><i class="glyphicon glyphicon-usd"></i> Contabilidad</a></li>
+                <li><a href="/logistics"><i class="glyphicon glyphicon-briefcase"></i> Logística</a></li>
+                <li><a href="/humanResources"><i class="glyphicon glyphicon-paperclip"></i> Recursos Humanos</a></li>
+                <li><a href="/contact"><i class="glyphicon glyphicon-phone"></i> Contáctenos</a></li>
+                <li><a href="/about"><i class="glyphicon glyphicon-send"></i> Acerca de</a></li>
+            </ul>
+  			</div><br>
+  		</div>
+
+  		<div class="col-sm-3">
+  		</div>
+
+  		<div class="col-sm-6">
+        	<div class="panel panel-default">
+            	<div class="panel-heading">
+              		<h3 class="panel-title">Administración</h3>
+            	</div>
+            	<div class="panel-body" style="text-align: center;">
+              		<a href="/departments" class="btn btn-primary"><i class="glyphicon glyphicon-folder-open"></i> Departamentos</a>
+              		<a href="/charges" class="btn btn-primary"><i class="glyphicon glyphicon-inbox"></i> Cargos</a>
+            	</div>
+        	</div>
+  		</div>
+
+  		<div class="col-sm-4">
+  		</div>
+	</body>
+
+</html>

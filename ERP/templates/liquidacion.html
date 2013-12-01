@@ -5,6 +5,7 @@
 <script type="text/javascript">
     $(function() {
         $("#id_fecha_liquidacion").datepicker({ dateFormat: 'yy-mm-dd'});
+        $("#id_fecha_liquidacion_m").datepicker({ dateFormat: 'yy-mm-dd'});
     });
 </script>
 {% endblock %}
@@ -19,9 +20,14 @@
 {% block contenido %}
 
     <script type="text/javascript">
-		function set (argument) {
-			$("#id_factura").val($("#facturas").val());
-		}
+        $(document).ready(function() {
+            $("#modificar").click(function() {
+                $("#id_id_m").val($("#id").text());
+                $("#id_fecha_liquidacion_m").val($("#fecha_liquidacion").text());
+                $("#id_valor_m").val($("#valor").text())
+                set_selected($("#empleado").text() ,"id_empleado_m")
+            });
+        });
     </script>
 
     <div class="container">
@@ -92,7 +98,7 @@
           <tr>
             <th>ID</th>
             <th>Empleado</th>
-            <th>Fecha</th>
+            <th>Fecha Liquidacion</th>
             <th>Valor</th>
           </tr>
         </thead>

@@ -8,12 +8,6 @@
   		<script type="text/javascript" src="{{STATIC_URL}}js/jquery-1.10.2.min.js"></script>
   		<script type="text/javascript" src="{{STATIC_URL}}js/bootstrap.min.js"></script>
   		<script type="text/javascript" src="{{STATIC_URL}}js/jquery-ui.js"></script>
-  		<script type="text/javascript">
-  			$(document).ready(function() {
-  				$(".meit").hide();
-  			});
-  		</script>
-
   		<style type="text/css">
   			.titulo, .texto{
   				color: rgb(169,3,41);
@@ -40,11 +34,13 @@
                                 values[this.name] = $(this).val('');
                             });
                             if(json.mensage=="Ingreso exitoso"){
-                            	showalert(json.mensage,"alert alert-info");
-                            	$(".meit").show();
+                            	showalert(json.mensage,"alert alert-success");
                             	$(".in").hide();
+                              $("#salir").show();
                             }
-                            
+                            else{
+                              showalert(json.mensage,"alert alert-info");
+                            }
                         },
                         error : function(xhr,errmsg,err) {
                         	showalert("Error en el servidor","alert alert-info");
@@ -58,18 +54,46 @@
     <script type="text/javascript">
         function showalert(message,alerttype) {
             $('#alerta').append('<div id="alertdiv" class="alert ' +  alerttype + '"><a class="close" data-dismiss="alert">×</a><span>'+message+'</span></div>')
-            setTimeout(function() {
-        $("#alertdiv").remove();}, 3500);
-  		}
+            setTimeout(function() {$("#alertdiv").remove();}, 3500);
+  		  }
   	</script>
 		
 	<div id="myCarousel" class="carousel slide">
 
-  <div class="col-sm-2">
-  	<a href="" class="meit"><img src="{{STATIC_URL}}img/con.jpg" width="200" height="200"></a>
-  	<a href="" class="meit"><img src="{{STATIC_URL}}img/RecursosHumanos.jpg" width="200" height="200"></a>
-  	<a href="" class="meit"><img src="{{STATIC_URL}}img/Logistica.jpg" width="200" height="200"></a>
+  <div class="col-sm-3">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Contabilidad</h3>
+          </div>
+          <div class="panel-body" style="text-align: center;">
+            <a href="/accounting"><img src="{{STATIC_URL}}img/con.jpg" width="200" height="200"></a>              
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Recursos Humanos</h3>
+          </div>
+          <div class="panel-body" style="text-align: center;">
+            <a href="/humanResources"><img src="{{STATIC_URL}}img/RecursosHumanos.jpg" width="200" height="200"></a>
+        </div>
+    </div>
+  	
+  	<div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Logística</h3>
+          </div>
+          <div class="panel-body" style="text-align: center;">
+            <a href="/logistics"><img src="{{STATIC_URL}}img/Logistica.jpg" width="200" height="200"></a>
+        </div>
+    </div>
+  	
   </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <h3 class="text-muted">Ent<img src="{{STATIC_URL}}img/erp.jpg" width="80" height="80"> <a data-toggle="modal" href="#modalFormLogin" class="btn btn-primary btn-lg in">Ingresar</a></h3>
 
 <div class="col-sm-8">
 	<div id="alerta"></div>
@@ -134,8 +158,6 @@
 </div>
 
 <div class="col-sm-2">
-	<a data-toggle="modal" href="#modalFormLogin" class="btn btn-primary btn-lg in">Ingresar</a>
-
     <div class="modal fade" id="modalFormLogin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -158,6 +180,13 @@
             </div>
         </div>
     </div>
+
+    <div id="salir" style="display:none">
+      <form action="/logout" id="salir">
+        <input class="btn btn-primary btn-lg" type="submit" value="Salir">
+      </form>
+    </div>
+
 </div>
 
 	</body>

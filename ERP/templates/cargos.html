@@ -16,7 +16,12 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $("#modificar").click(function() {
-                $("#id_numero_cuenta_m").val($("#numero_cuenta").text());
+                $("#id_id_m").val($("#id").text());
+                $("#id_nombre_cargo_m").val($("#nombre_cargo").text());
+                $("#id_descripcion_cargo_m").val($("#descripcion_cargo").text());
+                $("#id_salario_base_m").val($("#salario_base").text());
+                $("#id_desemepnio_m").val($("#desempenio").text());
+                $("#id_departamento_m").val($("#departamento").text());
             });
         });
     </script>
@@ -93,10 +98,11 @@
     <table id="tabla" class="table table-striped">
         <thead>
           <tr>
-            <th>Descripcion</th>
-            <th>ID Cuenta</th>
-            <th># Cuenta</th>
-            <th>Sub-cuenta</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Salario</th>
+            <th>Departamento</th>
+            <th>Desempeño</th>
           </tr>
         </thead>
         <tbody id="tb">

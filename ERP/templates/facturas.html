@@ -6,24 +6,6 @@
         $("#id_fecha_factura").datepicker({ dateFormat: 'yy-mm-dd'});
         $("#id_fecha_factura_m").datepicker({ dateFormat: 'yy-mm-dd'});
     });
-
-    /**function getCurrentTime() {
-        var CurrentTime = "";
-        try {
-            var CurrentDate = new Date();
-            var CurrentHours = CurrentDate.getHours();
-            var CurrentMinutes = CurrentDate.getMinutes();
-            var CurrentSeconds = CurrentDate.getSeconds();
-            if (CurrentHours < 10) { CurrentHours = "0" + CurrentHours; }
-            if (CurrentMinutes < 10) { CurrentMinutes = "0" + CurrentMinutes; }
-            if (CurrentSeconds < 10) { CurrentSeconds = "0" + CurrentSeconds; }
-            CurrentTime = "" + CurrentHours + ":" + CurrentMinutes + ":" +CurrentSeconds + "";
-        }
-        catch (ex) {
-        }
-        return CurrentTime;
-    }
-    */
 </script>
 
 <script>
@@ -57,7 +39,6 @@
 {% endblock %}
 
 {% block contenido %}
-
     <script type="text/javascript">
         $(document).ready(function() {
             $("#modificar").click(function() {

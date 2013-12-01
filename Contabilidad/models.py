@@ -26,17 +26,17 @@ class Producto(models.Model):
 	def __unicode__(self):
 		return self.nombre_producto
 
-class SubCuenta(models.Model):
-	numero_subcuenta=models.IntegerField()
-	descripcion_subcuenta=models.TextField()
-
-	def __unicode__(self):
-		return unicode(self.numero_subcuenta)
-
 class Cuenta(models.Model):
 	numero_cuenta=models.IntegerField()
 	descripcion_cuenta=models.TextField()
-	subcuenta=models.ForeignKey(SubCuenta)
+
+class SubCuenta(models.Model):
+	numero_subcuenta=models.IntegerField()
+	descripcion_subcuenta=models.TextField()
+	cuenta=models.ForeignKey(Cuenta)
+
+	def __unicode__(self):
+		return unicode(self.numero_subcuenta)
 
 	def __unicode__(self):
 		return u'%s%s' % (self.numero_cuenta, self.subcuenta.numero_subcuenta)
