@@ -206,3 +206,22 @@ def get_all_liquidations(request):
     if request.method=='POST':
         subcuentas=SubCuenta.objects.all()
         return HttpResponse(simplejson.dumps(ValuesQuerySetToDict(subcuentas)), mimetype='application/javascript')
+
+@csrf_exempt
+def get_bills_report(request):
+    if request.method=='POST':
+        fecha=request.POST['fecha']
+        lista=Factura.objects.filter(fecha_factura__year=fecha[:4], fecha_factura__month=fecha[5:7])
+        return render_to_response('informe.html', {'lista':lista, 'titulo':"Informe de Facturas", 'tipo':"Lista de Facturas"}, context_instance=RequestContext(request))
+
+@csrf_exempt
+def get_products_report(request):
+    if request.method=='POST':
+        lista=Factura.objects.filter(tipo_factura="V", productos__nombre_producto=request.POST['nombre']).annotate(venta=models.Count('productos'))
+        return render_to_response('informe.html', {'lista':lista, 'titulo':"Informe de Productos", 'tipo':"Lista de Productos (Compras)"}, context_instance=RequestContext(request))
+
+@csrf_exempt
+def get_products2_report(request):
+    if request.method=='POST':
+        lista=Factura.objects.filter(tipo_factura="C", productos__nombre_producto=request.POST['nombre']).annotate(venta=models.Count('productos'))
+        return render_to_response('informe.html', {'lista':lista, 'titulo':"Informe de Productos", 'tipo':"Lista de Productos (Ventas)"}, context_instance=RequestContext(request))

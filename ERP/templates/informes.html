@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Informes</title>
+	<link href="{{STATIC_URL}}css/bootstrap.min.css" rel="stylesheet" media="screen">
+  	<link href="{{STATIC_URL}}css/justified-nav.css" rel="stylesheet" media="screen">
+  	<link rel="stylesheet" href="{{STATIC_URL}}css/jquery-ui.css"/>
+  	<script type="text/javascript" src="{{STATIC_URL}}js/jquery-1.10.2.min.js"></script>
+  	<script type="text/javascript" src="{{STATIC_URL}}js/bootstrap.min.js"></script>
+  	<script type="text/javascript" src="{{STATIC_URL}}js/jquery-ui.js"></script>
+</head>
+
+<div class="container">
+    <div class="masthead">
+        <h3 class="text-muted">Ent<img src="{{STATIC_URL}}img/erp.jpg" width="80" height="80"></h3>
+        <ul class="nav nav-justified">
+          <li><a href="#"><i class="glyphicon glyphicon-home"></i> Home</a></li><!-- class="active"-->
+          <li><a href="#"><i class="glyphicon glyphicon-usd"></i> Contabilidad</a></li>
+          <li><a href="#"><i class="glyphicon glyphicon-briefcase"></i> Logística</a></li>
+          <li><a href="#"><i class="glyphicon glyphicon-paperclip"></i> Recursos Humanos</a></li>
+          <li><a href="#"><i class="glyphicon glyphicon-phone"></i> Contáctenos</a></li>
+          <li><a href="#"><i class="glyphicon glyphicon-send"></i> Acerca de</a></li>
+        </ul>
+  </div><br>
+
+<body>
+	<script type="text/javascript">
+		$(function() {
+        	$("#fecha").datepicker({ dateFormat: 'yy-mm-dd'});
+        	$("#fecha_pago").datepicker({ dateFormat: 'yy-mm-dd'});
+        	$("#fecha_descuento").datepicker({ dateFormat: 'yy-mm-dd'});
+    	});
+	</script>
+	<div class="col-sm-4">
+		<div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Facturas</h3>
+            </div>
+            <div class="panel-body" style="text-align: center;">
+            	<form method="POST" action="/billsReport">
+            		<label for="fecha">Ingrese la fecha:</label>
+            		<input class="form-control" name="fecha" id="fecha" type="text"/><br>
+            		<input class="btn btn-primary" type="submit" value="Ver"/>
+            	</form>
+            </div>
+          </div>
+	</div>
+
+	<div class="col-sm-4">
+		<div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Productos (Ventas)</h3>
+            </div>
+            <div class="panel-body" style="text-align: center;">
+            	<form method="POST" action="/productsReport">
+            		<label for="nombre">Ingrese el nombre:</label>
+            		<input class="form-control" name="nombre" id="nombre" type="text"/><br>
+            		<input class="btn btn-primary" type="submit" value="Ver"/>
+            	</form>
+            </div>
+          </div>
+	</div>
+
+	<div class="col-sm-4">
+		<div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Productos (Compras)</h3>
+            </div>
+            <div class="panel-body" style="text-align: center;">
+            	<form method="POST" action="/products2Report">
+            		<label for="nombre">Ingrese el nombre:</label>
+            		<input class="form-control" name="nombre" id="nombre" type="text"/><br>
+            		<input class="btn btn-primary" type="submit" value="Ver"/>
+            	</form>
+            </div>
+          </div>
+	</div>
+
+	<div class="col-sm-4">
+		<div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Pagos adiciconales</h3>
+            </div>
+            <div class="panel-body" style="text-align: center;">
+            	<form method="POST" action="/paysReport">
+            		<label for="fecha_pago">Ingrese la fecha:</label>
+            		<input class="form-control" name="fecha_pago" id="fecha_pago" type="text"/><br>
+            		<input class="btn btn-primary" type="submit" value="Ver"/>
+            	</form>
+            </div>
+          </div>
+	</div>
+
+	<div class="col-sm-4">
+		<div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Descuentos</h3>
+            </div>
+            <div class="panel-body" style="text-align: center;">
+             	<form method="POST" action="/discountsReport">
+            		<label for="fecha_descuento">Ingrese la fecha:</label>
+            		<input class="form-control" name="fecha_descuento" id="fecha_descuento" type="text"/><br>
+            		<input class="btn btn-primary" type="submit" value="Ver"/>
+            	</form>
+            </div>
+          </div>
+	</div>
+
+	<div class="col-sm-4">
+		<div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Historiales de trabajo</h3>
+            </div>
+            <div class="panel-body" style="text-align: center;">
+              	<form method="POST" action="/jobsReport">
+            		<label for="id">Ingrese el número de empleado:</label>
+            		<input class="form-control" name="id" id="id" type="text"/><br>
+            		<input class="btn btn-primary" type="submit" value="Ver"/>
+            	</form>
+            </div>
+          </div>
+	</div>
+</body>
+</html>
+
+	

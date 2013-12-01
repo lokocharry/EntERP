@@ -8,32 +8,80 @@
   		<script type="text/javascript" src="{{STATIC_URL}}js/jquery-1.10.2.min.js"></script>
   		<script type="text/javascript" src="{{STATIC_URL}}js/bootstrap.min.js"></script>
   		<script type="text/javascript" src="{{STATIC_URL}}js/jquery-ui.js"></script>
+  		<script type="text/javascript">
+  			$(document).ready(function() {
+  				$(".meit").hide();
+  			});
+  		</script>
+
+  		<style type="text/css">
+  			.titulo, .texto{
+  				color: rgb(169,3,41);
+  			}
+  		</style>
 	</head>
 
 	<body>
+
+	<script type="text/javascript">
+        $(document).ready(function() {
+            $("#ingresar").click(function() {
+                    var frm = $('#formularioLogin');
+                    $.ajax({
+                        url : "/login", 
+                        type : "POST",
+                        dataType: "json",
+                        data : frm.serialize(),
+                        success : function(json) {
+                            $("#modalFormLogin").modal('hide');
+                            var $inputs = $('#formularioLogin :input');
+                            var values = {};
+                            $inputs.each(function() {
+                                values[this.name] = $(this).val('');
+                            });
+                            if(json.mensage=="Ingreso exitoso"){
+                            	showalert(json.mensage,"alert alert-info");
+                            	$(".meit").show();
+                            	$(".in").hide();
+                            }
+                            
+                        },
+                        error : function(xhr,errmsg,err) {
+                        	showalert("Error en el servidor","alert alert-info");
+                            //alert(xhr.status + ": " + xhr.responseText);
+                        }
+                    });
+                    return false;
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        function showalert(message,alerttype) {
+            $('#alerta').append('<div id="alertdiv" class="alert ' +  alerttype + '"><a class="close" data-dismiss="alert">×</a><span>'+message+'</span></div>')
+            setTimeout(function() {
+        $("#alertdiv").remove();}, 3500);
+  		}
+  	</script>
 		
 	<div id="myCarousel" class="carousel slide">
-  <!-- Indicators -->
-  <ol class="carousel-indicators">
-    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-    <li data-target="#myCarousel" data-slide-to="1"></li>
-    <li data-target="#myCarousel" data-slide-to="2"></li>
-  </ol>
 
   <div class="col-sm-2">
-  	<a href=""><img src="{{STATIC_URL}}img/con.jpg" width="200" height="200"></a>
+  	<a href="" class="meit"><img src="{{STATIC_URL}}img/con.jpg" width="200" height="200"></a>
+  	<a href="" class="meit"><img src="{{STATIC_URL}}img/RecursosHumanos.jpg" width="200" height="200"></a>
+  	<a href="" class="meit"><img src="{{STATIC_URL}}img/Logistica.jpg" width="200" height="200"></a>
   </div>
 
 <div class="col-sm-8">
+	<div id="alerta"></div>
   <div class="carousel-inner">
 
     <div class="item active">
       <img src="{{STATIC_URL}}img/ERP-2.jpg">
       <div class="container">
         <div class="carousel-caption">
-          <h1 style="color:black;">Qué es un ERP</h1>
+          <h1 class="titulo">Qué es un ERP</h1>
           <pthis is="" an="" example="" layout="" with="" carousel="" that="" uses="" the="" bootstrap="" 3="" styles.<="" small=""><p></p>
-          <p style="color:#4E4949;">Los sistemas de planificación de recursos empresariales, o ERP (por sus siglas en inglés, Enterprise Resource Planning) son sistemas de información gerenciales que integran y manejan muchos de los negocios asociados con las operaciones de producción y de los aspectos de distribución de una compañía en la producción de bienes o servicios.
+          <p class="texto">Los sistemas de planificación de recursos empresariales, o ERP (por sus siglas en inglés, Enterprise Resource Planning) son sistemas de información gerenciales que integran y manejan muchos de los negocios asociados con las operaciones de producción y de los aspectos de distribución de una compañía en la producción de bienes o servicios.
         </p></pthis></div>
       </div>
     </div>
@@ -42,8 +90,8 @@
       <img src="{{STATIC_URL}}img/ERP-3.jpg">
       <div class="container">
         <div class="carousel-caption">
-          <h1>Para que sirve un ERP?</h1>
-          <p style="color:#4E4949;">Los sistemas ERP típicamente manejan la producción, logística, distribución, inventario, envíos, facturas y contabilidad de la compañía de forma modular. Sin embargo, la Planificación de Recursos Empresariales o el software ERP puede intervenir en el control de muchas actividades de negocios como ventas, entregas, pagos, producción, administración de inventarios, calidad de administración y la administración de recursos humanos.</p>
+          <h1 class="titulo">Para que sirve un ERP?</h1>
+          <p class="texto">Los sistemas ERP típicamente manejan la producción, logística, distribución, inventario, envíos, facturas y contabilidad de la compañía de forma modular. Sin embargo, la Planificación de Recursos Empresariales o el software ERP puede intervenir en el control de muchas actividades de negocios como ventas, entregas, pagos, producción, administración de inventarios, calidad de administración y la administración de recursos humanos.</p>
         </div>
       </div>
     </div>
@@ -52,8 +100,8 @@
       <img src="{{STATIC_URL}}img/ERP-4.jpg">
       <div class="container">
         <div class="carousel-caption">
-          <h1 style="color:black;">Beneficios de usar un ERP</h1>
-          <p style="color:#4E4949;">
+          <h1 class="titulo">Beneficios de usar un ERP</h1>
+          <p class="texto">
 			> Optimizar, estandarizar y agilizar los procesos de negocio.<br>
 			> Facilitar el acceso a toda la información de la compañía de forma confiable, precisa y oportuna, a través de la <br>integración de datos.
 			> Optimizar la comunicación y compartir información  entre diferentes áreas de la organización.<br>
@@ -68,8 +116,8 @@
       <img src="{{STATIC_URL}}img/ERP-5.jpg">
       <div class="container">
         <div class="carousel-caption">
-          <h1>Contáctenos</h1>
-          <p><a class="btn btn-large btn-primary" href="#">Nuestro grupo desarrolador</a></p>
+          <h1 class="titulo">Contáctenos</h1>
+          <p class="texto"><a class="btn btn-large btn-primary" href="#">Nuestro grupo desarrollador</a></p>
         </div>
       </div>
     </div>
@@ -83,10 +131,34 @@
     <span class="icon-next"></span>
   </a>  
 </div>
-<!-- /.carousel -->
 </div>
 
-<div class="col-sm-2"></div>
+<div class="col-sm-2">
+	<a data-toggle="modal" href="#modalFormLogin" class="btn btn-primary btn-lg in">Ingresar</a>
+
+    <div class="modal fade" id="modalFormLogin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Ingresar</h4>
+                </div>
+                <div class="modal-body">
+                <div class="container" id="form">
+                    <form method="POST" class="form-signin" id="formularioLogin">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                    </form>
+                </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="ingresar">Ingresar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 	</body>
 

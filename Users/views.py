@@ -11,7 +11,11 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
-	return render_to_response('index.html', context_instance=RequestContext(request))
+	form=AuthenticationForm(request.POST)
+	return render_to_response('index.html', {'form':form}, context_instance=RequestContext(request))
+
+def reports(request):
+	return render_to_response('informes.html', context_instance=RequestContext(request))
 
 @csrf_exempt
 def create_user(request):
@@ -67,6 +71,3 @@ def log_in(request):
 			else:
 				response_dict.update({'mensage': 'El usuario/contrasenia no existe'})
 				return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
-	else:
-		form=AuthenticationForm()
-	return render_to_response('login.html',{'form':form}, context_instance=RequestContext(request))

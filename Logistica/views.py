@@ -83,3 +83,24 @@ def get_all_pay_discounts(request):
     if request.method=='POST':
         pagos_descuentos=Pagos_O_Descuentos.objects.all()
         return HttpResponse(simplejson.dumps(ValuesQuerySetToDict(pagos_descuentos)), mimetype='application/javascript')
+
+@csrf_exempt
+def get_pays_report(request):
+    if request.method=='POST':
+        fecha=request.POST['fecha_pago']
+        lista=Pagos_O_Descuentos.objects.filter(fecha__year=fecha[:4], fecha__month=fecha[5:7], valor__gte=0)
+        return render_to_response('informe.html', {'lista':lista, 'titulo':"Informe de Pagos", 'tipo':"Lista de Pagos"}, context_instance=RequestContext(request))
+
+@csrf_exempt
+def get_discounts_report(request):
+    if request.method=='POST':
+        fecha=request.POST['fecha_descuento']
+        lista=Pagos_O_Descuentos.objects.filter(fecha__year=fecha[:4], fecha__month=fecha[5:7], valor__lt=0)
+        return render_to_response('informe.html', {'lista':lista, 'titulo':"Informe de Descuentos", 'tipo':"Lista de Descuentos"}, context_instance=RequestContext(request))        
+
+@csrf_exempt
+def get_jobs_report(request):
+    if request.method=='POST':
+        empleado=request.POST['id']
+        lista=Historial_Trabajo.objects.filter(empleado__id_empleado=empleado)
+        return render_to_response('informe.html', {'lista':lista, 'titulo':"Informe de Trabajoss", 'tipo':"Lista de Trabajos"}, context_instance=RequestContext(request))
