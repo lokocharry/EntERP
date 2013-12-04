@@ -31,6 +31,9 @@ class Persona(models.Model):
 	)
 	tipo_cliente=models.CharField(max_length=20, choices=TIPO_CLIENTE, null=True, blank=True)
 
+	class Meta:
+		permissions = (("can_view_about", "Can view acerca de"),)
+
 	def __unicode__(self):
 		if self.apellido is None:
 			return self.nombre

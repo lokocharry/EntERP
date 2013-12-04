@@ -1,5 +1,7 @@
 from Logistica.forms import *
 from Logistica.models import *
+from Users.models import *
+from RecursosHumanos.models import *
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse
 from django.template import RequestContext
@@ -29,10 +31,10 @@ def modify_job_history(request):
     if request.method == "POST":
         historial=get_object_or_404(Historial_Trabajo, id=request.POST['id'])
         response_dict = {}
-        hisrorial.fecha_inicio= request.POST['fecha_inicio']
-        hisrorial.fecha_fin= request.POST['fecha_fin']
-        hisrorial.empleado= request.POST['empleado']
-        hisrorial.cargo= request.POST['cargo']
+        historial.fecha_inicio= request.POST['fecha_inicio']
+        historial.fecha_fin= request.POST['fecha_fin']
+        historial.empleado= Persona.objects.get(id=request.POST['empleado'])
+        historial.cargo= Cargo.objects.get(id=request.POST['cargo'])
         historial.save()
         response_dict.update({'mensage': 'Modificado exitoso'})
         return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
@@ -71,7 +73,7 @@ def modify_pay_discount(request):
     if request.method == "POST":
         pago_descuento=get_object_or_404(Pagos_O_Descuentos, id=request.POST['id'])
         response_dict = {}
-        pago_descuento.empleado= request.POST['empleado']
+        pago_descuento.empleado= Persona.objects.get(id=request.POST['empleado'])
         pago_descuento.descripcion= request.POST['descripcion']
         pago_descuento.valor= request.POST['valor']
         pago_descuento.fecha= request.POST['fecha']

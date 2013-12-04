@@ -32,7 +32,7 @@
 
     <div class="container">
         <form action="/getLiquidation" id="formularioVer">
-            <label>Ingrese el número del empleado que desea ver:</label>
+            <label>Ingrese el número de liquidación que desea ver:</label>
             <input type="text" id="ndata" class="form-control"/><br>
             <button type="button" class="btn btn-primary" id='ver' onclick="getData();"><i class="glyphicon glyphicon-search"></i> Ver Liquidación</button>
         </form>
@@ -96,10 +96,10 @@
     <table id="tabla" class="table table-striped">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Empleado</th>
             <th>Fecha Liquidacion</th>
             <th>Valor</th>
+            <th>ID</th>
+            <th>Empleado</th>
           </tr>
         </thead>
         <tbody id="tb">

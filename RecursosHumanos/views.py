@@ -30,7 +30,7 @@ def modify_department(request):
         departamento=get_object_or_404(Departamento, id=request.POST['id'])
         response_dict = {}
         departamento.nombre_departamento=request.POST['nombre_departamento']
-        historial.save()
+        departamento.save()
         response_dict.update({'mensage': 'Modificado exitoso'})
         return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
 

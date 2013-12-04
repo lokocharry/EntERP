@@ -6,7 +6,7 @@
 
 {% block panel %} 
     <a data-toggle="modal" href="#modalFormCreate" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Crear cargo</a><br><br>
-    <form action="/listDepartments" id="fList">
+    <form action="/listCharges" id="fList">
         <a class="btn btn-primary" id="list"><i class="glyphicon glyphicon-list-alt"></i> Lista de cargos</a>
     </form>
 {% endblock %}
@@ -21,7 +21,7 @@
                 $("#id_descripcion_cargo_m").val($("#descripcion_cargo").text());
                 $("#id_salario_base_m").val($("#salario_base").text());
                 $("#id_desemepnio_m").val($("#desempenio").text());
-                $("#id_departamento_m").val($("#departamento").text());
+                set_selected($("#departamento").text() ,"id_departamento_m")
             });
         });
     </script>
@@ -97,11 +97,12 @@
     <table id="tabla" class="table table-striped">
         <thead>
           <tr>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Salario</th>
-            <th>Departamento</th>
             <th>Desempeño</th>
+            <th>Salario</th>
+            <th>Nombre</th>
+            <th>ID</th>
+            <th>Departamento</th>
+            <th>Descripción</th>  
           </tr>
         </thead>
         <tbody id="tb">

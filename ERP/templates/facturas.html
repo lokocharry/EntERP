@@ -45,9 +45,30 @@
                 $("#id_fecha_factura_m").val($("#fecha_factura").text());
                 $("#id_id_m").val($("#id").text());
                 $("#id_numero_factura_m").val($("#numero_factura").text())
-                set_selected($("#cliente").text() ,"id_cliente_m")
+                $("#id_tipo_factura_m").val($("#tipo_factura").text());
+                set_selected($("#cliente").text() ,"id_cliente_m");
                 set_selected($("#empleado").text() ,"id_empleado_m")
                 set_selected($("#subcuenta").text() ,"id_subcuenta_m")
+                $.ajax({
+                        url : "/getpf", 
+                        type : "POST",
+                        dataType: "json",
+                        data : {
+                            factura: $("#id").text()
+                        },
+                        success : function(json) {
+                            for (var i=0 ; i<json.length; i++) {
+                                $("#id_producto_factura_set-"+i+"-factura_m").val(json[i].factura);
+                                $("#id_producto_factura_set-"+i+"-cantidad_m").val(json[i].cantidad);
+                                set_selected(json[i].producto ,"id_producto_factura_set-"+i+"-producto_m");
+                                //tr+="<td>"+json[i][name]+"</td>";
+                          }
+                        },
+                        error : function(xhr,errmsg,err) {
+                            //alert(xhr.status + ": " + xhr.responseText);
+                            showalert("Error inesperado en el servidor","alert alert-info");
+                        }
+                    });
             });
         });
     </script>
@@ -68,6 +89,7 @@
         Valor: <label id="valor"></label><br>
         Cliente: <label id="cliente"></label><br>
         Fecha de venta: <label id="fecha_factura"></label><br>
+        Tipo Factura: <label id="tipo_factura"></label><br>
         Empleado: <label id="empleado"></label><br>
         N° de Factura: <label id="numero_factura"></label><br>
         Cuenta: <label id="subcuenta"></label><br>
@@ -129,12 +151,12 @@
         <thead>
           <tr>
             <th># Factura</th>
+            <th>Cuenta</th>
             <th>Tipo Factura</th>
             <th>Empleado</th>
             <th>Valor</th>
             <th>Fecha venta</th>
             <th>ID Factura</th>
-            <th>Cuenta</th>
             <th>Cliente</th>
           </tr>
         </thead>
