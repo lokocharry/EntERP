@@ -1,7 +1,7 @@
 from django import forms
 from Contabilidad.models import *
 from Users.models import *
-from django.contrib.admin import widgets  
+from django.forms.models import inlineformset_factory
 
 class ClienteForm(forms.ModelForm):
 
@@ -37,6 +37,9 @@ class FacturaForm(forms.ModelForm):
 
 	class Meta:
 		model=Factura
+		exclude = ['productos']
+
+FacturaFormSet=inlineformset_factory(Factura, Producto_Factura, fields=('cantidad', 'producto',), can_delete=True, extra=10, form=ClienteForm)
 
 class CuentaForm(forms.ModelForm):
 

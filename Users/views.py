@@ -12,6 +12,9 @@ from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
 	form=AuthenticationForm(request.POST)
+	for field in form.fields:
+			form.fields[field].widget.attrs['class'] = 'form-control'
+			form.fields[field].widget.attrs['placeholder'] = field
 	return render_to_response('index.html', {'form':form}, context_instance=RequestContext(request))
 
 def reports(request):

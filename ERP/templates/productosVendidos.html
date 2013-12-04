@@ -1,0 +1,46 @@
+<html>
+
+	<head>
+		<link href="{{STATIC_URL}}css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<script type="text/javascript" src="{{STATIC_URL}}js/bootstrap.min.js"></script>
+		<title>{{ titulo }}</title>
+		<style type="text/css">
+			body{
+				background: rgb(252,255,244); /* Old browsers */
+				background: -moz-linear-gradient(top,  rgba(252,255,244,1) 0%, rgba(223,229,215,1) 40%, rgba(179,190,173,1) 100%); /* FF3.6+ */
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,255,244,1)), color-stop(40%,rgba(223,229,215,1)), color-stop(100%,rgba(179,190,173,1))); /* Chrome,Safari4+ */
+				background: -webkit-linear-gradient(top,  rgba(252,255,244,1) 0%,rgba(223,229,215,1) 40%,rgba(179,190,173,1) 100%); /* Chrome10+,Safari5.1+ */
+				background: -o-linear-gradient(top,  rgba(252,255,244,1) 0%,rgba(223,229,215,1) 40%,rgba(179,190,173,1) 100%); /* Opera 11.10+ */
+				background: -ms-linear-gradient(top,  rgba(252,255,244,1) 0%,rgba(223,229,215,1) 40%,rgba(179,190,173,1) 100%); /* IE10+ */
+				background: linear-gradient(to bottom,  rgba(252,255,244,1) 0%,rgba(223,229,215,1) 40%,rgba(179,190,173,1) 100%); /* W3C */
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#b3bead',GradientType=0 ); /* IE6-9 */
+				text-align: center;
+			}
+		</style>
+	</head>
+
+	<body>
+	<h2 align="center">{{ tipo }}</h2>
+	<div class="col-sm-3"></div>
+	<div class="col-sm-8">
+		<div class="table-responsive col-sm-8">
+			<h4 align="center">Reporte</h4>
+			<table class="table table-striped table-bordered" align="center">
+					<tr><h3>Facturas</h3></tr>
+					<tr>
+						<th>Producto</th>
+						<th>Cantidad</th>
+					</tr>
+					{% for i in lista %}
+						<tr>
+							<td>{{ i.producto }}</td>
+							<td>{{ i.venta }}</td>
+						</tr>
+					{% endfor %}
+				</table>		
+		</div>
+	</div>
+	<div class="col-sm-3"></div>
+	</body>
+
+</html>

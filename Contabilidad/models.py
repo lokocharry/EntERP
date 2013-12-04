@@ -16,6 +16,21 @@ def to_json(obj):
 def ValuesQuerySetToDict(vqs):
 		return [to_json(item) for item in vqs]
 
+class Cuenta(models.Model):
+	numero_cuenta=models.IntegerField()
+	descripcion_cuenta=models.TextField()
+
+	def __unicode__(self):
+		return unicode(self.numero_cuenta)
+
+class SubCuenta(models.Model):
+	numero_subcuenta=models.IntegerField()
+	descripcion_subcuenta=models.TextField()
+	cuenta=models.ForeignKey(Cuenta)
+
+	def __unicode__(self):
+		return u'%d%d' % (self.cuenta.numero_cuenta, self.numero_subcuenta)
+
 class Producto(models.Model):
 	nombre_producto=models.CharField(max_length=20)
 	descripcion_producto=models.TextField()
@@ -25,21 +40,6 @@ class Producto(models.Model):
 
 	def __unicode__(self):
 		return self.nombre_producto
-
-class Cuenta(models.Model):
-	numero_cuenta=models.IntegerField()
-	descripcion_cuenta=models.TextField()
-
-class SubCuenta(models.Model):
-	numero_subcuenta=models.IntegerField()
-	descripcion_subcuenta=models.TextField()
-	cuenta=models.ForeignKey(Cuenta)
-
-	def __unicode__(self):
-		return unicode(self.numero_subcuenta)
-
-	def __unicode__(self):
-		return u'%s%s' % (self.numero_cuenta, self.subcuenta.numero_subcuenta)
 
 class Factura(models.Model):
 	TIPO_FACTURA=(
@@ -51,7 +51,7 @@ class Factura(models.Model):
 	fecha_factura=models.DateField()
 	tipo_factura=models.CharField(max_length=15, choices=TIPO_FACTURA)
 	empleado=models.ForeignKey(Persona, related_name='factura_empleados')
-	productos=models.ManyToManyField(Producto)
+	productos=models.ManyToManyField(Producto, through='Producto_Factura')
 	cuenta=models.ForeignKey(Cuenta)
 
 	#Factura de venta
@@ -61,14 +61,22 @@ class Factura(models.Model):
 		pedidos=Producto_Factura.objects.filter(factura=self.id)
 		total=0
 		for i in pedidos:
-			total=total+(i.precio_unitario_venta*i.cantidad_venta)
+			total=total+(i.producto.precio_minimo*i.cantidad)
 		return total
+
+	valor=property(_get_valor)
+	
 
 	def __unicode__(self):
 		if self.numero_factura is not None:
 			return u'%s (%s)' % (self.numero_factura, self.cliente)
 		else:
 			return unicode(self.id)
+
+class Producto_Factura(models.Model):
+	producto=models.ForeignKey(Producto)
+	factura=models.ForeignKey(Factura)	
+	cantidad=models.IntegerField()
 
 class Liquidacion(models.Model):
 	empleado=models.ForeignKey(Persona)

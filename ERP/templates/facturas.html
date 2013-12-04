@@ -71,8 +71,8 @@
         Empleado: <label id="empleado"></label><br>
         N° de Factura: <label id="numero_factura"></label><br>
         Cuenta: <label id="cuenta"></label><br>
-        <a data-toggle="modal" href="#modalFormModify" id="modificar" class="btn btn-primary">Modificar</a>
-        <a id="cerrar" class="btn btn-primary">Cerrar</a>
+        <a data-toggle="modal" href="#modalFormModify" id="modificar" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i> Modificar</a>
+        <a id="cerrar" class="btn btn-primary"><i class="glyphicon glyphicon-remove"></i> Cerrar</a>
     </div>
 
     <div class="modal fade" id="modalFormCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -86,7 +86,11 @@
                 <div class="container" id="form">
                     <form action="/bills" method="POST" class="form-signin" id="formularioCrear">
                         {% csrf_token %}
-                        {{form.as_p}}
+                        {{ form.as_p }}
+                        <div class="container">
+                            <label>Productos</label>
+                            {{ fieldset.as_p }}    
+                        </div>
                     </form>
                 </div>
                 </div>
@@ -124,12 +128,14 @@
     <table id="tabla" class="table table-striped">
         <thead>
           <tr>
-            <th>Tipo pago</th>
-            <th>Empleado</th>
-            <th>Cliente</th>
-            <th>Valor</th>
             <th># Factura</th>
+            <th>Tipo Factura</th>
+            <th>Empleado</th>
+            <th>Valor</th>
             <th>Fecha venta</th>
+            <th>ID Factura</th>
+            <th>Cuenta</th>
+            <th>Cliente</th>
           </tr>
         </thead>
         <tbody id="tb">

@@ -1,23 +1,30 @@
 from Contabilidad.forms import *
 from Contabilidad.models import *
+from Logistica.models import Pagos_O_Descuentos
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.utils import simplejson
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
 
 @csrf_exempt
 def create_bill(request):
-	if request.method=='POST':
-		form=FacturaForm(request.POST)
-		response_dict = {}
-		if form.is_valid():
-			form.save()
-			response_dict.update({'mensage': 'Creado exitoso'})
-		return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
-	else:
-		form=FacturaForm()
-	return render_to_response('facturas.html', {'form':form}, context_instance=RequestContext(request))
+    if request.method=='POST':
+        form=FacturaForm(request.POST)
+        fset=FacturaFormSet(instance=Factura)
+        response_dict={}
+        if form.is_valid():
+            factura=form.save()
+            fset=FacturaFormSet(request.POST, request.FILES, instance=factura)
+            if fset.is_valid():
+                fset.save()
+                response_dict.update({'mensage':'Creado exitoso'})
+        return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
+    else:
+        form=FacturaForm()
+        fset=FacturaFormSet()
+        return render_to_response('facturas.html', {'form':form, 'fieldset':fset}, context_instance=RequestContext(request))
 
 @csrf_exempt
 def modify_bill(request):
@@ -211,17 +218,29 @@ def get_all_liquidations(request):
 def get_bills_report(request):
     if request.method=='POST':
         fecha=request.POST['fecha']
-        lista=Factura.objects.filter(fecha_factura__year=fecha[:4], fecha_factura__month=fecha[5:7])
-        return render_to_response('informe.html', {'lista':lista, 'titulo':"Informe de Facturas", 'tipo':"Lista de Facturas"}, context_instance=RequestContext(request))
+        lista=Factura.objects.filter(Q(tipo_factura="V") | Q(tipo_factura="C"), fecha_factura__year=fecha[:4], fecha_factura__month=fecha[5:7])
+        return render_to_response('informeFacturas.html', {'lista':lista, 'titulo':"Informe de Facturas", 'tipo':"Lista de Facturas"}, context_instance=RequestContext(request))
 
 @csrf_exempt
 def get_products_report(request):
     if request.method=='POST':
-        lista=Factura.objects.filter(tipo_factura="V", productos__nombre_producto=request.POST['nombre']).annotate(venta=models.Count('productos'))
-        return render_to_response('informe.html', {'lista':lista, 'titulo':"Informe de Productos", 'tipo':"Lista de Productos (Compras)"}, context_instance=RequestContext(request))
+        fecha=request.POST['fecha_venta']
+        lista=Producto_Factura.objects.filter(factura__tipo_factura="V", factura__fecha_factura__year=fecha[:4], factura__fecha_factura__month=fecha[5:7]).values('producto').annotate(venta=models.Sum('cantidad'))
+        return render_to_response('productosVendidos.html', {'lista':lista, 'titulo':"Informe de Productos", 'tipo':"Lista de Productos (Compras)"}, context_instance=RequestContext(request))
 
 @csrf_exempt
 def get_products2_report(request):
     if request.method=='POST':
-        lista=Factura.objects.filter(tipo_factura="C", productos__nombre_producto=request.POST['nombre']).annotate(venta=models.Count('productos'))
-        return render_to_response('informe.html', {'lista':lista, 'titulo':"Informe de Productos", 'tipo':"Lista de Productos (Ventas)"}, context_instance=RequestContext(request))
+        fecha=request.POST['fecha_compra']
+        lista=Producto_Factura.objects.filter(factura__tipo_factura="C", factura__fecha_factura__year=fecha[:4], factura__fecha_factura__month=fecha[5:7]).values('producto').annotate(venta=models.Sum('cantidad'))
+        return render_to_response('productosComprados.html', {'lista':lista, 'titulo':"Informe de Productos", 'tipo':"Lista de Productos (Ventas)"}, context_instance=RequestContext(request))
+
+@csrf_exempt
+def get_payroll_report(request):
+    if request.method=='POST':
+        fecha=request.POST['fecha_nomina']
+        lista=Factura.objects.filter(tipo_factura="C", fecha_factura__year=fecha[:4], fecha_factura__month=fecha[5:7])
+        lista1=Factura.objects.filter(tipo_factura="V", fecha_factura__year=fecha[:4], fecha_factura__month=fecha[5:7])
+        lista2=Liquidacion.objects.filter(fecha_liquidacion__year=fecha[:4], fecha_liquidacion__month=fecha[5:7])
+        lista3=Pagos_O_Descuentos.objects.filter(fecha__year=fecha[:4], fecha__month=fecha[5:7])
+        return render_to_response('informeNomina.html', {'lista':lista, 'titulo':"Informe de Nomina", 'tipo':"Nomina", 'lista1':lista1, 'lista2':lista2, 'lista3':lista3}, context_instance=RequestContext(request))
