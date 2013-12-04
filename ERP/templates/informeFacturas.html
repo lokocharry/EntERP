@@ -33,7 +33,6 @@
 						<th>Fecha Factura</th>
 						<th>Tipo Factura</th>
 						<th>Empleado</th>
-						<th>Productos</th>
 						<th>Cuenta</th>
 						<th>Numero Factura</th>
 						<th>Valor</th>
@@ -45,13 +44,7 @@
 							<td>{{ i.fecha_factura }}</td>
 							<td>{{ i.tipo_factura }}</td>
 							<td>{{ i.empleado }}</td>
-							{% for j in lista.collection.productos %}
-								<td>
-       								{{ j.nombre_producto }}
-       								{{ j.cantidad }}
-       							</td>
-   							{% endfor %}
-   							<td>{{ i.cuenta }}</td>
+   							<td>{{ i.subcuenta }}</td>
    							<td>{{ i.numero_factura }}</td>
    							<td>{{ i.valor }}</td>
 						</tr>

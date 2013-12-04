@@ -43,6 +43,7 @@ def modify_bill(request):
         fset=FacturaFormSet(instance=Factura)
         fset=FacturaFormSet(request.POST, request.FILES, instance=factura)
         if fset.is_valid():
+            Producto_Factura.objects.filter(factura=request.POST['id']).delete()
             fset.save()
         factura.save()
         response_dict.update({'mensage': 'Modificado exitoso'})
