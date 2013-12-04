@@ -17,7 +17,7 @@
         $(document).ready(function() {
             $("#modificar").click(function() {
                 $("#id_id_m").val($("#id").text());
-                $("#id_nmbre_departamento_m").val($("#nombre_departamento").text());
+                $("#id_nombre_departamento_m").val($("#nombre_departamento").text());
             });
         });
     </script>
@@ -36,7 +36,6 @@
             ID de Departamento: <label id="id"></label><br>
             Nombre del Departamento: <label id="nombre_departamento"></label><br>
             <a data-toggle="modal" href="#modalFormModify" id="modificar" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i> Modificar</a>
-            <a data-toggle="modal" href="#modalFormModify" id="eliminar" class="btn btn-primary"><i class="glyphicon glyphicon-trash"></i> Eliminar</a>
             <a id="cerrar" class="btn btn-primary"><i class="glyphicon glyphicon-remove"></i> Cerrar</a>
         </form>
     </div>

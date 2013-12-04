@@ -47,7 +47,7 @@
                 $("#id_numero_factura_m").val($("#numero_factura").text())
                 set_selected($("#cliente").text() ,"id_cliente_m")
                 set_selected($("#empleado").text() ,"id_empleado_m")
-                set_selected($("#cuenta").text() ,"id_cuenta_m")
+                set_selected($("#subcuenta").text() ,"id_subcuenta_m")
             });
         });
     </script>
@@ -70,7 +70,7 @@
         Fecha de venta: <label id="fecha_factura"></label><br>
         Empleado: <label id="empleado"></label><br>
         N° de Factura: <label id="numero_factura"></label><br>
-        Cuenta: <label id="cuenta"></label><br>
+        Cuenta: <label id="subcuenta"></label><br>
         <a data-toggle="modal" href="#modalFormModify" id="modificar" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i> Modificar</a>
         <a id="cerrar" class="btn btn-primary"><i class="glyphicon glyphicon-remove"></i> Cerrar</a>
     </div>

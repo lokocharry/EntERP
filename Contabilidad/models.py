@@ -20,6 +20,9 @@ class Cuenta(models.Model):
 	numero_cuenta=models.IntegerField()
 	descripcion_cuenta=models.TextField()
 
+	class Meta:
+		permissions = (("can_view_cuenta", "Can view cuenta"),)
+
 	def __unicode__(self):
 		return unicode(self.numero_cuenta)
 
@@ -27,6 +30,9 @@ class SubCuenta(models.Model):
 	numero_subcuenta=models.IntegerField()
 	descripcion_subcuenta=models.TextField()
 	cuenta=models.ForeignKey(Cuenta)
+
+	class Meta:
+		permissions = (("can_view_subcuenta", "Can view subcuenta"),)
 
 	def __unicode__(self):
 		return u'%d%d' % (self.cuenta.numero_cuenta, self.numero_subcuenta)
@@ -37,6 +43,9 @@ class Producto(models.Model):
 	cantidad_minima=models.IntegerField()
 	precio_minimo=models.IntegerField()
 	precio_maximo=models.IntegerField()
+
+	class Meta:
+		permissions = (("can_view_producto", "Can view producto"),)
 
 	def __unicode__(self):
 		return self.nombre_producto
@@ -52,7 +61,7 @@ class Factura(models.Model):
 	tipo_factura=models.CharField(max_length=15, choices=TIPO_FACTURA)
 	empleado=models.ForeignKey(Persona, related_name='factura_empleados')
 	productos=models.ManyToManyField(Producto, through='Producto_Factura')
-	cuenta=models.ForeignKey(Cuenta)
+	subcuenta=models.ForeignKey(SubCuenta)
 
 	#Factura de venta
 	numero_factura=models.IntegerField(null=True, blank=True)
@@ -66,6 +75,8 @@ class Factura(models.Model):
 
 	valor=property(_get_valor)
 	
+	class Meta:
+		permissions = (("can_view_factura", "Can view factura"),("can_view_reports", "Can view reportes"),)
 
 	def __unicode__(self):
 		if self.numero_factura is not None:
@@ -90,6 +101,9 @@ class Liquidacion(models.Model):
 		for i in pagosdescuentos:
 			total=total+i.valor
 		return pago+total
+
+	class Meta:
+		permissions = (("can_view_liquidacion", "Can view liquidacion"),)
 	
 	def __unicode__(self):
 		return '%s %s %s' % (self.empleado.nombre, self.empleado.apellido, self.fecha_liquidacion)

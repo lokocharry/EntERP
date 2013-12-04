@@ -7,8 +7,10 @@ from django.utils import simplejson
 from django.views.decorators.csrf import csrf_exempt
 from Contabilidad.models import to_json
 from Contabilidad.models import ValuesQuerySetToDict
+from django.contrib.auth.decorators import permission_required
 
 @csrf_exempt
+@permission_required('Logistica.can_add_historial_trabajo', login_url='/')
 def create_job_history(request):
 	if request.method=='POST':
 		form=HistorialTrabajoForm(request.POST)
@@ -22,6 +24,7 @@ def create_job_history(request):
 	return render_to_response('historialTrabajo.html', {'form':form}, context_instance=RequestContext(request))
 
 @csrf_exempt
+@permission_required('Logistica.can_change_historial_trabajo', login_url='/')
 def modify_job_history(request):
     if request.method == "POST":
         historial=get_object_or_404(Historial_Trabajo, id=request.POST['id'])
@@ -35,18 +38,21 @@ def modify_job_history(request):
         return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
 
 @csrf_exempt
+@permission_required('Logistica.can_view_historial_trabajo', login_url='/')
 def get_job_history(request):
     if request.method=='POST':
     	historial = get_object_or_404(Historial_Trabajo, id=request.POST['id'])
         return HttpResponse(simplejson.dumps(to_json(historial)), mimetype='application/javascript')
 
 @csrf_exempt
+@permission_required('Logistica.can_view_historial_trabajo', login_url='/')
 def get_all_job_historys(request):
     if request.method=='POST':
         historiales=Historial_Trabajo.objects.all()
         return HttpResponse(simplejson.dumps(ValuesQuerySetToDict(historiales)), mimetype='application/javascript')
 
 @csrf_exempt
+@permission_required('Logistica.can_add_pago_o_descuento', login_url='/')
 def create_pay_discount(request):
 	if request.method=='POST':
 		form=PagosODescuentosForm(request.POST)
@@ -60,6 +66,7 @@ def create_pay_discount(request):
 	return render_to_response('pagosDescuentos.html', {'form':form}, context_instance=RequestContext(request))
 
 @csrf_exempt
+@permission_required('Logistica.can_change_pago_o_descuento', login_url='/')
 def modify_pay_discount(request):
     if request.method == "POST":
         pago_descuento=get_object_or_404(Pagos_O_Descuentos, id=request.POST['id'])
@@ -73,18 +80,21 @@ def modify_pay_discount(request):
         return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
 
 @csrf_exempt
+@permission_required('Logistica.can_view_pago_o_descuento', login_url='/')
 def get_pay_discount(request):
     if request.method=='POST':
     	pago_descuento = get_object_or_404(Pagos_O_Descuentos, id=request.POST['id'])
         return HttpResponse(simplejson.dumps(to_json(pago_descuento)), mimetype='application/javascript')
 
 @csrf_exempt
+@permission_required('Logistica.can_view_pago_o_descuento', login_url='/')
 def get_all_pay_discounts(request):
     if request.method=='POST':
         pagos_descuentos=Pagos_O_Descuentos.objects.all()
         return HttpResponse(simplejson.dumps(ValuesQuerySetToDict(pagos_descuentos)), mimetype='application/javascript')
 
 @csrf_exempt
+@permission_required('Logistica.can_view_reports', login_url='/')
 def get_pays_report(request):
     if request.method=='POST':
         fecha=request.POST['fecha_pago']
@@ -92,6 +102,7 @@ def get_pays_report(request):
         return render_to_response('informePagos.html', {'lista':lista, 'titulo':"Informe de Pagos", 'tipo':"Lista de Pagos"}, context_instance=RequestContext(request))
 
 @csrf_exempt
+@permission_required('Logistica.can_view_reports', login_url='/')
 def get_discounts_report(request):
     if request.method=='POST':
         fecha=request.POST['fecha_descuento']
@@ -99,6 +110,7 @@ def get_discounts_report(request):
         return render_to_response('informeDescuentos.html', {'lista':lista, 'titulo':"Informe de Descuentos", 'tipo':"Lista de Descuentos"}, context_instance=RequestContext(request))        
 
 @csrf_exempt
+@permission_required('Logistica.can_view_reports', login_url='/')
 def get_jobs_report(request):
     if request.method=='POST':
         empleado=request.POST['id']

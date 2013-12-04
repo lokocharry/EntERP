@@ -67,4 +67,5 @@ urlpatterns = patterns('',
     url(r'^accounting$', 'Users.views.accounting'),
     url(r'^logistics$', 'Users.views.logistics'),
     url(r'^humanResources$', 'Users.views.human_resources'),
+    url(r'^about$', 'Users.views.about'),
 )
